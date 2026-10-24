@@ -39,6 +39,7 @@ Three launch gates also showed up that the skill does not cover:
   examples, naming the permission flags and what they turn off (`--dangerously-skip-permissions
   (no approvals)`, `--yolo (no approvals, no sandbox)`). One go covers each line shown; a
   changed PERMS needs a new go.
+  Status: reverted 2026-10-25 by the owner (a12f7bf): the classifier ignores the column.
 - [x] 2. `SKILL.md` "Launch workers":
   - If the host blocks a launch (for example Claude Code's auto-mode check), do not retry it
     and do not try other flags or tools to get the same launch through. Tell the owner it was
@@ -55,6 +56,7 @@ Three launch gates also showed up that the skill does not cover:
   - If the agent name did not stick (a startup timeout), address the worker by its pane id;
     every `agent` verb and `wait-turn.sh` accept it.
 - [x] 3. `evals/evals.json` eval 1 (`spawn-gate`): the proposal-line behaviour lists PERMS.
+  Status: reverted 2026-10-25 by the owner (a12f7bf): the classifier ignores the column.
 - [x] 4. `CHANGELOG.md` 0.3.0 section; `metadata.version` 0.2.1 to 0.3.0.
 - [x] 5. Live run, both kinds: propose two throwaway workers with PERMS lines, each in a new
   empty folder under this session's scratchpad, task "reply ok": `claude` `haiku` low with

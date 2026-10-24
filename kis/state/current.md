@@ -1,9 +1,10 @@
 # Current
 
-Stamp: main 370d69c 505ca2c85fdc
+Stamp: main a12f7bf d958d0792b51
 
-Status: 0.3.0 (PERMS column and launch gates) merged to main 2026-10-24 at 370d69c, not
-pushed or released; 0.2.1 (baseline wording fix) also unreleased.
+Status: 0.3.0 (launch gates) on main, not pushed or released: merged 2026-10-24 at 370d69c;
+the PERMS column was reverted on 2026-10-25 at a12f7bf at the owner's request (the classifier
+ignores it). 0.2.1 (baseline wording fix) also unreleased.
 0.2.0 released 2026-10-24 (tag `v0.2.0` at d604944, GitHub release "herdr-orch 0.2.0:
 event-mode worker watcher") and installed in ~/.agents/skills. 0.1.0 is tagged `v0.1.0` at
 6fcd718 (no GitHub release).
@@ -53,7 +54,8 @@ by eval. Scenario 4 `idle-finish` (0.2.0) has never been run.
   try: perms-claude replied `ok` (seq 389, "bypass permissions on"), perms-codex (gpt-6.1-sol
   low, `--yolo`) replied `ok` (seq 394, "permissions: YOLO mode"). Neither showed a folder-trust
   prompt in a new empty folder under the scratchpad. Both tabs closed; `agent list` shows no
-  `perms-` worker. Before commit: `tests/run.sh` exit 0, SKILL.md 387 lines.
+  `perms-` worker. Before commit: `tests/run.sh` exit 0, SKILL.md 387 lines. PERMS revert,
+  2026-10-25: `tests/run.sh` exit 0; "Propose workers" and eval 1 match c347c1c exactly.
 - Codex orch launch gate, 2026-10-24: a Codex 0.162.1 orch (gpt-6.1-sol low, `--sandbox
   danger-full-access -a on-request`, config `approvals_reviewer = "auto_review"`) reading the
   branch SKILL.md proposed `orch-test-claude` with its PERMS line; on the owner's relayed go
@@ -73,7 +75,9 @@ No task in progress.
 1. Auto-mode rule for Claude orchs (owner request, 2026-10-24): `bootstrap.sh` install asks
    the owner whether to add the herdr-orch `autoMode.allow` rule to `~/.claude/settings.json`
    (backup, keep `"$defaults"`, safe to re-run, show the diff), and `SKILL.md`'s blocked-launch
-   rule offers that rule. A PERMS line alone does not clear the block (see Proof). Scope it with
+   rule offers that rule. A proposal line naming the flags does not clear the block (see Proof);
+   the rule text written into the owner's settings says the orch proposes each worker "with its
+   permission flags", which no longer holds since the PERMS revert, so reword it. Scope it with
    `/kis:plan` first.
 2. Add Command Code as a supported agent (owner's next task, 2026-10-24); scope it with
    `/kis:plan` first.
