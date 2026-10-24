@@ -1,8 +1,9 @@
 # Current
 
-Stamp: main d604944 3d35fd051614
+Stamp: main 90d573c 6bc96bc16a5e
 
-Status: 0.2.0 released 2026-10-24 (tag `v0.2.0` at d604944, GitHub release "herdr-orch 0.2.0:
+Status: 0.2.1 (baseline wording fix) merged to main 2026-10-24, not pushed or released.
+0.2.0 released 2026-10-24 (tag `v0.2.0` at d604944, GitHub release "herdr-orch 0.2.0:
 event-mode worker watcher") and installed in ~/.agents/skills. 0.1.0 is tagged `v0.1.0` at
 6fcd718 (no GitHub release).
 
@@ -40,23 +41,21 @@ by eval. Scenario 4 `idle-finish` (0.2.0) has never been run.
   installed 0.2.0; the installed `SKILL.md` and `wait-turn.sh` match GitHub `v0.2.0` byte for
   byte; the installed script printed `gone srv=10356311` for an unknown agent at 22:31.
 
+- 0.2.1, 2026-10-24: `tests/run.sh` exit 0 (wait-turn 30 cases); breaking the seq-rise branch
+  fails the new baseline-0 case on its own; restore byte-identical.
+
 ## Now
 
 No task in progress.
 
 ## Next
 
-1. Baseline wording fix, ships as 0.2.1 (owner request, 2026-10-24): `SKILL.md` says "`0` for a
-   fresh worker", and two orchs passed `0` for workers that had run turns. Harmless while the
-   worker is working, but a stopped worker with seq above 0 would print `finished` at once. Say:
-   with no recorded seq use `auto`, never `0`; `0` only for a worker launched this run. Add a
-   test for baseline 0 on a stopped worker with a seq, CHANGELOG line, version bump.
-2. Add a PERMS column to the worker proposal so auto mode lets launches through (owner
+1. Add a PERMS column to the worker proposal so auto mode lets launches through (owner
    request, 2026-10-24; a PERMS line plus the owner's go got the 9b `danger-full-access` Codex
    launch past auto mode): [perms-column.md](../intent/perms-column.md).
-3. Add Command Code as a supported agent (owner's next task, 2026-10-24); scope it with
+2. Add Command Code as a supported agent (owner's next task, 2026-10-24); scope it with
    `/kis:plan` first.
-4. Support several orchs in one project (owner request, 2026-10-24); scope it with `/kis:plan`
+3. Support several orchs in one project (owner request, 2026-10-24); scope it with `/kis:plan`
    first. Goal and collision points: [multi-orch.md](../intent/multi-orch.md).
-5. Run the four eval scenarios (scenario 4 `idle-finish` is new in 0.2.0) against the current
+4. Run the four eval scenarios (scenario 4 `idle-finish` is new in 0.2.0) against the current
    version to prove the fixes, after the owner approves the harness, model and effort.
