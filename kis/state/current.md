@@ -108,5 +108,6 @@ No task in progress.
 2. Remove plan-first delegation: plan approved and reviewed 2026-10-25 (codex gpt-6.1-sol low,
    2 fixed); ready for `/kis:act`:
    [remove-plan-mode.md](../intent/remove-plan-mode.md).
-3. Run the four eval scenarios (scenario 4 `idle-finish` is new in 0.2.0) against the current
-   version to prove the fixes, after the owner approves the harness, model and effort.
+3. Run the four eval scenarios: plan approved and reviewed 2026-10-25 (codex gpt-6.1-sol low,
+   2 fixed):
+   [eval-run.md](../intent/eval-run.md). Runs after items 1 and 2 are acted on.
