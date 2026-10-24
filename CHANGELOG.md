@@ -5,8 +5,9 @@
 - `SKILL.md` "Launch workers": a launch the host blocks is not retried or reworked; the orch
   offers the owner the exact command or the allow rule `Bash(herdr agent start:*)` and waits. The
   orch never changes a worker's permission flags unless the owner names that choice.
-- On `agent_not_ready`, the orch answers a folder-trust prompt itself when it names the worker's
-  recorded launch folder; any other dialog goes to the owner. A worker whose name did not stick
+- On `agent_not_ready`, the orch answers Claude's folder-trust prompt itself when it names the
+  worker's recorded launch folder, moving to "Yes, I trust this folder" first (the default is
+  "No, exit"); any other dialog goes to the owner. A worker whose name did not stick
   is addressed by its pane id.
 
 ## 0.2.1

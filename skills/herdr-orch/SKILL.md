@@ -201,14 +201,17 @@ label, restore it:
 herdr tab rename <tab_id> "opus: fix loops"
 ```
 
-On `agent_not_ready`, read the pane. A TUI asks before it works in a folder it
-has not seen: Claude asks "Is this a project you created or one you trust?" and
-Codex asks "Trust this folder?" with "1. Trust and continue" (both unverified).
-If the pane shows that folder-trust prompt and the folder it names is the
-worker's recorded launch folder (the tab's `--cwd` from the approved proposal),
-answer the default option with `herdr agent send-keys <name> enter`, then
-confirm with `herdr agent get <name>` that the worker is working. Any other
-dialog, or a trust prompt for any other folder, goes to the owner.
+On `agent_not_ready`, read the pane. Claude asks before it works in a folder it
+has not seen: "Accessing workspace: <folder>" and "Quick safety check: Is this a
+project you created or one you trust?", with `❯ No, exit` selected and
+`Yes, I trust this folder` below it. Enter alone picks "No, exit" and Claude
+quits. If the folder it names is the worker's recorded launch folder (the tab's
+`--cwd` from the approved proposal), send `herdr agent send-keys <name> down`,
+read the pane again until `❯` marks "Yes, I trust this folder", then send
+`herdr agent send-keys <name> enter` and confirm with `herdr agent get <name>`
+that the worker is working. Codex launched with its approval and sandbox flags
+showed no trust prompt. Any other dialog, or a trust prompt for any other
+folder, goes to the owner.
 
 If the agent name did not stick (a startup timeout), address the worker by its
 pane id; every `agent` verb and `wait-turn.sh` accept it.
