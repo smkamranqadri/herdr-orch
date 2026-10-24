@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "d=$PWD; case $d in /*) ;; *) exit 0;; esac; while :; do h=\"$d/.agents/skills/kis/hooks/session-anchor.sh\"; [ -x \"$h\" ] && exec \"$h\" \"$d\"; [ \"$d\" = / ] && exit 0; d=$(dirname \"$d\"); done",
+            "timeout": 20
+          }
+        ]
+      }
+    ]
+  }
+}
