@@ -1,9 +1,10 @@
 # Current
 
-Stamp: watcher-fix e948f78 3d35fd051614
+Stamp: main d604944 3d35fd051614
 
-Status: 0.1.0 released 2026-10-24 (6fcd718). 0.2.0 (event-mode watcher) committed on branch
-`watcher-fix` (f0bcaf0), verified, not merged or released.
+Status: 0.2.0 released 2026-10-24 (tag `v0.2.0` at d604944, GitHub release "herdr-orch 0.2.0:
+event-mode worker watcher") and installed in ~/.agents/skills. 0.1.0 is tagged `v0.1.0` at
+6fcd718 (no GitHub release).
 
 ## Evals
 
@@ -35,22 +36,22 @@ by eval. Scenario 4 `idle-finish` (0.2.0) has never been run.
 - 9b (Codex orch, gpt-6.1-sol low, same turn): `finished seq=203 status=done srv=10356311
   waited=1207s` at 21:35:08; 50 API calls while waiting (`exec_command` yields after 1 s, then
   `write_stdin` polls about every 30 s).
+- Release 0.2.0, 2026-10-24: CI run 40116400195 passed on d604944; `bootstrap.sh update`
+  installed 0.2.0; the installed `SKILL.md` and `wait-turn.sh` match GitHub `v0.2.0` byte for
+  byte; the installed script printed `gone srv=10356311` for an unknown agent at 22:31.
 
 ## Now
 
-Watcher fix committed on branch `watcher-fix` (f0bcaf0), proof above. Not pushed, merged or
-released: the owner decides.
+No task in progress.
 
 ## Next
 
-1. Merge `watcher-fix` to main and release 0.2.0 when the owner says; list the outgoing commits
-   and review the full diff before any push.
-2. Add a PERMS column to the worker proposal so auto mode lets launches through (owner
+1. Add a PERMS column to the worker proposal so auto mode lets launches through (owner
    request, 2026-10-24; a PERMS line plus the owner's go got the 9b `danger-full-access` Codex
    launch past auto mode): [perms-column.md](../intent/perms-column.md).
-3. Add Command Code as a supported agent (owner's next task, 2026-10-24); scope it with
+2. Add Command Code as a supported agent (owner's next task, 2026-10-24); scope it with
    `/kis:plan` first.
-4. Support several orchs in one project (owner request, 2026-10-24); scope it with `/kis:plan`
+3. Support several orchs in one project (owner request, 2026-10-24); scope it with `/kis:plan`
    first. Goal and collision points: [multi-orch.md](../intent/multi-orch.md).
-5. Re-run the three eval scenarios against the current version to prove the fixes, after the
-   owner approves the harness, model and effort.
+4. Run the four eval scenarios (scenario 4 `idle-finish` is new in 0.2.0) against the current
+   version to prove the fixes, after the owner approves the harness, model and effort.
