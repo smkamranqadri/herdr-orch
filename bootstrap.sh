@@ -19,6 +19,9 @@ Options:
   --home <dir>       Home directory to install into. Defaults to $HOME.
   --force            install: replace an existing install.
   --no-claude-link   Do not create the ~/.claude/skills/herdr-orch link.
+  --claude-automode yes|no
+                     install, update: add (yes) or skip (no) the auto-mode rule that lets a
+                     Claude Code orch launch workers. Without it, asks on a terminal.
   -h, --help         Show this help.
 
 Examples:
@@ -41,6 +44,7 @@ source_arg=""
 home_dir="${HOME:-}"
 force="false"
 claude_link="true"
+claude_automode=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -50,6 +54,9 @@ while [[ $# -gt 0 ]]; do
     --home) [[ $# -ge 2 ]] || die "--home requires a path"; home_dir="$2"; shift 2 ;;
     --force) force="true"; shift ;;
     --no-claude-link) claude_link="false"; shift ;;
+    --claude-automode)
+      [[ $# -ge 2 && ( "$2" == yes || "$2" == no ) ]] || die "--claude-automode requires yes or no"
+      claude_automode="$2"; shift 2 ;;
     -h|--help) usage; exit 0 ;;
     *) die "unknown argument: $1" ;;
   esac
@@ -67,6 +74,10 @@ fi
 source_root="$(cd "$source_arg" && pwd -P)"
 [[ -n "$home_dir" ]] || die "missing --home <dir> and HOME is unset"
 home_dir="$(mkdir -p "$home_dir" && cd "$home_dir" && pwd -P)"
+
+# Checked before the install, which creates ~/.claude/skills.
+claude_existed="false"
+[[ -d "$home_dir/.claude" ]] && claude_existed="true"
 
 install_args=(--source "$source_root" --home "$home_dir")
 [[ "$claude_link" == "false" ]] && install_args+=(--no-claude-link)
@@ -107,11 +118,71 @@ compare_skill_links() {
   done
 }
 
+# The Claude Code auto-mode exception for worker launches. Mode check exits 10 when the rule is
+# already there; mode write adds it, replacing an older herdr-orch rule. Both reject settings of
+# the wrong shape and leave the file untouched.
+automode_edit() {
+  ruby -rjson -e '
+    mode, path = ARGV
+    rule = "herdr-orch worker launches: `herdr agent start <name> --kind claude|codex --pane <pane> -- ...` with `--dangerously-skip-permissions` (Claude) or `--yolo` (Codex) is allowed after the user said go to that worker'"'"'s proposal. The user runs the herdr-orch skill on purpose: it proposes each worker and waits for the user'"'"'s go, and every worker runs in a visible Herdr tab the user and the orch watch."
+    ours = ->(e) { e.is_a?(String) && (e.start_with?("Herdr worker launches:") || e.start_with?("herdr-orch worker launches:")) }
+    begin
+      data = File.exist?(path) ? JSON.parse(File.read(path)) : {}
+    rescue JSON::ParserError => e
+      abort("#{path} is not valid JSON (#{e.message.lines.first.strip}); left unchanged")
+    end
+    abort("#{path}: top level is not an object; left unchanged") unless data.is_a?(Hash)
+    am = data["autoMode"]
+    abort("#{path}: autoMode is not an object; left unchanged") unless am.nil? || am.is_a?(Hash)
+    allow = am && am["allow"]
+    abort("#{path}: autoMode.allow is not a list; left unchanged") unless allow.nil? || allow.is_a?(Array)
+    exit(10) if allow && allow.include?(rule) && allow.count(&ours) == 1
+    exit(0) if mode == "check"
+    am = (data["autoMode"] ||= {})
+    allow = (am["allow"] ||= ["$defaults"])
+    allow.reject!(&ours)
+    allow << rule
+    real = File.exist?(path) ? File.realpath(path) : path
+    tmp = "#{real}.herdr-orch-tmp"
+    File.write(tmp, JSON.pretty_generate(data) + "\n")
+    File.chmod(File.stat(real).mode & 07777, tmp) if File.exist?(real)
+    File.rename(tmp, real)
+  ' "$@"
+}
+
+automode_offer() {
+  local settings="$home_dir/.claude/settings.json" answer="$claude_automode" reply="" backup="" rc=0
+  [[ "$claude_existed" == "true" ]] || return 0
+  automode_edit check "$settings" || rc=$?
+  [[ $rc -eq 10 ]] && { echo "Claude auto-mode rule already present: $settings"; return 0; }
+  [[ $rc -eq 0 ]] || exit 1
+  if [[ -z "$answer" ]]; then
+    if ! (exec </dev/tty) 2>/dev/null; then
+      echo "Claude Code auto mode blocks worker launches; to allow them, re-run with --claude-automode yes"
+      return 0
+    fi
+    read -r -p "Add the herdr-orch auto-mode rule to ~/.claude/settings.json? [y/N] " reply </dev/tty || true
+    [[ "$reply" == [yY]* ]] && answer="yes" || answer="no"
+  fi
+  [[ "$answer" == "yes" ]] || { echo "Skipped the Claude auto-mode rule"; return 0; }
+  if [[ -e "$settings" ]]; then
+    backup="$settings.bak-herdr-orch-$(date +%Y%m%d-%H%M%S)"
+    cp "$settings" "$backup"
+  fi
+  automode_edit write "$settings"
+  echo "Added the herdr-orch auto-mode rule to $settings"
+  if [[ -n "$backup" ]]; then
+    echo "Backup: $backup"
+    diff -u "$backup" "$settings" || true
+  fi
+}
+
 case "$command_name" in
   install)
     args=("${install_args[@]}")
     [[ "$force" == "true" ]] && args+=(--force)
     "$source_root/scripts/install-skill.sh" "${args[@]}"
+    automode_offer
     echo
     echo "Next: in a Herdr pane, start Claude Code and run /herdr-orch <task>,"
     echo "or in Codex mention \$herdr-orch <task>."
@@ -145,5 +216,6 @@ case "$command_name" in
           ;;
       esac
     done < <(compare)
+    automode_offer
     ;;
 esac

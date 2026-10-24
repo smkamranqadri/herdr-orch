@@ -187,8 +187,8 @@ Plan-first delegation). Never change a worker's permission flags (for example to
 If the host blocks a launch (for example Claude Code's auto-mode check), do not
 retry it and do not try other flags or tools to get the same launch through.
 Tell the owner it was blocked and offer the two choices that are theirs: run the
-exact command themselves (in Claude Code, `! <command>`), or add the allow rule
-`Bash(herdr agent start:*)`, which pre-approves every launch with any flags.
+exact command themselves (in Claude Code, `! <command>`), or re-run the
+herdr-orch installer with `--claude-automode yes` and start a new Claude session.
 Then wait.
 
 `agent start` returns success only after Herdr detects the agent ready, so a

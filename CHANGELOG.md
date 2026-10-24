@@ -2,8 +2,11 @@
 
 ## 0.3.0
 
+- `bootstrap.sh` `install` and `update` ask whether to add an `autoMode.allow` rule to
+  `~/.claude/settings.json` that lets a Claude Code orch in auto mode launch workers
+  (`--claude-automode yes|no` answers without asking). A yes keeps a backup and prints the diff.
 - `SKILL.md` "Launch workers": a launch the host blocks is not retried or reworked; the orch
-  offers the owner the exact command or the allow rule `Bash(herdr agent start:*)` and waits. The
+  offers the owner the exact command or the installer's auto-mode rule and waits. The
   orch never changes a worker's permission flags unless the owner names that choice.
 - On `agent_not_ready`, the orch answers Claude's folder-trust prompt itself when it names the
   worker's recorded launch folder, moving to "Yes, I trust this folder" first (the default is

@@ -55,7 +55,8 @@ codex --sandbox danger-full-access   # then: $herdr-orch fix the flaky retry tes
 ```
 
 The skill only runs when you call it by name. Codex needs `--sandbox danger-full-access`
-because its default sandbox blocks the Herdr socket.
+because its default sandbox blocks the Herdr socket. Claude Code's auto mode blocks worker
+launches, so the installer asks whether to add an auto-mode rule that allows them.
 
 Requirements: Herdr (tested with 0.9.5), and Claude Code or Codex.
 
