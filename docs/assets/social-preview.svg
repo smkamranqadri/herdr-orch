@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" width="1280" height="640">
+  <style>
+    .flow { stroke: #8250df; stroke-width: 2.5; fill: none; stroke-dasharray: 8 7; }
+    .bg { fill: #f6f8fa; }
+    .card { fill: #ffffff; stroke: #d0d7de; stroke-width: 1.5; }
+    .head { fill: #1f2328; font: 600 17px ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+    .muted { fill: #59636e; font: 13px ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+    .mono { fill: #1f2328; font: 12.5px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .monomuted { fill: #59636e; font: 12.5px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .bubble { fill: #ddf4ff; stroke: #54aeff; stroke-width: 1.2; }
+    .text { fill: #1f2328; font: 15px ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+    .core { fill: #8250df; }
+    .coretext { fill: #ffffff; font: 700 22px ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+    .coresub { fill: #eee6ff; font: 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .ok { fill: #1a7f37; font: 600 14px ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+    .tag { fill: #1f2328; font: 600 20px ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  </style>
+  <rect x="0" y="0" width="1280" height="640" fill="#f6f8fa"/>
+  <text x="640" y="118" text-anchor="middle" style="fill:#8250df;font:800 76px ui-sans-serif, system-ui, sans-serif">herdr-orch</text>
+  <text x="640" y="172" text-anchor="middle" style="fill:#1f2328;font:600 32px ui-sans-serif, system-ui, sans-serif">Run a team of coding agents from one Herdr session</text>
+  <g transform="translate(160 190)">
+
+  <!-- orch tab: proposal and the owner's go -->
+  <rect class="card" x="32" y="56" width="300" height="236" rx="12"/>
+  <text class="head" x="52" y="86">orch tab</text>
+  <text class="muted" x="52" y="106">proposes before it launches</text>
+  <text class="monomuted" y="138"><tspan x="52">NAME</tspan><tspan x="142">KIND</tspan><tspan x="212">EFFORT</tspan></text>
+  <text class="mono" y="158"><tspan x="52">fix-retry</tspan><tspan x="142">claude</tspan><tspan x="212">high</tspan></text>
+  <text class="mono" y="178"><tspan x="52">readme</tspan><tspan x="142">codex</tspan><tspan x="212">medium</tspan></text>
+  <rect class="bubble" x="52" y="198" width="228" height="38" rx="10"/>
+  <text class="text" x="68" y="222">you: go</text>
+  <text class="muted" x="52" y="272">nothing starts before your go</text>
+
+  <!-- core -->
+  <path class="flow" d="M332 174 C 372 174, 372 190, 408 190"/>
+  <rect class="core" x="408" y="140" width="154" height="100" rx="50"/>
+  <text class="coretext" x="485" y="186" text-anchor="middle">herdr-orch</text>
+  <text class="coresub" x="485" y="208" text-anchor="middle">propose · verify</text>
+
+  <!-- workers, each in its own tab and worktree -->
+  <path class="flow" d="M562 190 C 600 190, 600 116, 640 116"/>
+  <path class="flow" d="M562 190 C 600 190, 600 254, 640 254"/>
+
+  <g>
+    <rect class="card" x="640" y="56" width="290" height="120" rx="12"/>
+    <text class="head" x="660" y="86">fix-retry</text>
+    <text class="muted" x="660" y="106">own tab, own worktree</text>
+    <text class="mono" x="660" y="134">completion_seq 291 → 292</text>
+    <text class="ok" x="660" y="160">✓ turn finished, diff checked</text>
+  </g>
+  <g>
+    <rect class="card" x="640" y="194" width="290" height="120" rx="12"/>
+    <text class="head" x="660" y="224">readme</text>
+    <text class="muted" x="660" y="244">own tab, own worktree</text>
+    <text class="mono" x="660" y="272">completion_seq 303 → 304</text>
+    <text class="ok" x="660" y="298">✓ turn finished, diff checked</text>
+  </g>
+
+  </g>
+  <text x="640" y="580" text-anchor="middle" style="fill:#59636e;font:500 24px ui-sans-serif, system-ui, sans-serif">You approve the plan. Workers do the work. The orch checks it.</text>
+</svg>
