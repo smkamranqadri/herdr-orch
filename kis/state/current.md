@@ -89,13 +89,9 @@ No task in progress.
 
 ## Next
 
-1. Auto-mode rule for Claude orchs (owner request, 2026-10-24): `bootstrap.sh` install asks
-   the owner whether to add the herdr-orch `autoMode.allow` rule to `~/.claude/settings.json`
-   (backup, keep `"$defaults"`, safe to re-run, show the diff), and `SKILL.md`'s blocked-launch
-   rule offers that rule. A proposal line naming the flags does not clear the block (see Proof);
-   the rule text written into the owner's settings says the orch proposes each worker "with its
-   permission flags", which no longer holds since the PERMS revert, so reword it. Scope it with
-   `/kis:plan` first.
+1. Installer offers the auto-mode rule: plan approved and reviewed 2026-10-25 (codex
+   gpt-6.1-sol medium, 5 findings fixed); ready for `/kis:act`:
+   [automode-rule.md](../intent/automode-rule.md).
 2. Add Command Code as a supported agent (owner's next task, 2026-10-24); scope it with
    `/kis:plan` first.
 3. Support several orchs in one project (owner request, 2026-10-24); scope it with `/kis:plan`
