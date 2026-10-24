@@ -105,7 +105,8 @@ No task in progress.
 1. Command Code as a worker kind: plan approved and reviewed 2026-10-25 (codex gpt-6.1-sol
    medium, 4 fixed); ready for `/kis:act`:
    [command-code.md](../intent/command-code.md).
-2. Remove plan-first delegation (`references/plan-mode.md` and its `SKILL.md` section): the owner
-   plans with KIS instead (2026-10-25). Scope it with `/kis:plan` first.
+2. Remove plan-first delegation: plan approved and reviewed 2026-10-25 (codex gpt-6.1-sol low,
+   2 fixed); ready for `/kis:act`:
+   [remove-plan-mode.md](../intent/remove-plan-mode.md).
 3. Run the four eval scenarios (scenario 4 `idle-finish` is new in 0.2.0) against the current
    version to prove the fixes, after the owner approves the harness, model and effort.
