@@ -50,9 +50,8 @@ No task in progress.
 
 ## Next
 
-1. Add a PERMS column to the worker proposal so auto mode lets launches through (owner
-   request, 2026-10-24; a PERMS line plus the owner's go got the 9b `danger-full-access` Codex
-   launch past auto mode): [perms-column.md](../intent/perms-column.md).
+1. PERMS column and launch gates: plan approved and reviewed (codex gpt-6.1-sol medium, 2
+   findings fixed, 2026-10-24); ready for `/kis:act`: [perms-column.md](../intent/perms-column.md).
 2. Add Command Code as a supported agent (owner's next task, 2026-10-24); scope it with
    `/kis:plan` first.
 3. Support several orchs in one project (owner request, 2026-10-24); scope it with `/kis:plan`
