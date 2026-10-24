@@ -4,7 +4,7 @@ description: "Coordinates Claude Code and Codex worker agents from one orch sess
 disable-model-invocation: true
 metadata:
   author: smkamranqadri
-  version: "0.1.0"
+  version: "0.2.0"
 ---
 
 # herdr-orch
@@ -229,29 +229,57 @@ plan-first worker.**
 
 ## Track workers
 
-Orchestrations are long-running — worker slices take minutes to hours, and a
-worker is never abandoned because a wait expired. Block on Herdr's native agent
-status in **check-in intervals** of 3–5 minutes (sized to the slice — longer for
-heavier slices) instead of polling screens:
+Worker slices take minutes to hours. Track each turn with the shipped watcher,
+never a hand-written wait loop: every orch that wrote its own missed finished
+workers or woke itself every few minutes for nothing.
+
+Orch reads never mark a tab seen, so an unfocused worker settles as `done`, but
+a tab the user has viewed settles as `idle`; both mean stopped. Neither tracks
+turns: a worker still `done` from its last turn matches a wait at once. Before
+each prompt, record the worker's `completion_seq` from `herdr agent get <name>`
+as the turn's baseline (`0` for a fresh worker; Herdr omits the field while a
+worker is working, and on some agents altogether).
+
+Then start the watcher once for the turn, as a background job (Claude Code:
+`run_in_background`, no tool timeout needed). `<skill dir>` is the folder
+holding this SKILL.md (installed: `~/.agents/skills/herdr-orch`):
 
 ```bash
-herdr agent wait fix-loops --until done --timeout 300000     # completion check-in
-herdr agent wait fix-loops --until blocked --timeout 300000  # question or menu
-herdr pane wait-output <pane_id> --match "<text>" --timeout 300000
+<skill dir>/scripts/wait-turn.sh fix-loops <baseline> [stall-s 600] [backstop-s 3600] [srv]
 ```
 
-Orch reads never mark a tab seen, so an unfocused worker settles as `done`, not
-`idle` — but a tab the user has viewed settles as `idle`, and both mean stopped.
-Neither status tracks turns: a worker still `done` from its last turn matches a
-wait at once, and `agent prompt --wait` can match a turn that was already
-running. Before each prompt, record the worker's `completion_seq` from `herdr
-agent get <name>`; count the turn finished only once `completion_seq` has risen
-past that value, and re-enter the wait if it has not. `--timeout` is the
-check-in interval, never a deadline on the worker. On expiry, read the screen
-(`herdr agent read fix-loops --source recent-unwrapped --lines 120`) and
-re-enter the wait — loop until the worker reaches a terminal state, asks a
-question, or a stop condition fires. When a reported status looks wrong, debug
-detection with `herdr agent explain <pane_id> --json`.
+It blocks on Herdr's own waits and prints one line only when something
+happens, so a Claude Code orch spends nothing while the worker runs: a
+20-minute turn cost it no API calls (2026-10-24). A Codex orch cannot wait that
+way: its shell tool returns while the script runs, so it has to keep polling the
+same run, about 2–3 API calls a minute in the same test. In Codex, start the
+script once and poll that run with the longest yield the tool allows; never
+start a second run. For long slices, prefer a Claude Code orch. Do not check in,
+read the screen, or post progress turns while it runs. Act on its line:
+
+| Line | Do |
+| --- | --- |
+| `finished seq=N status=S srv=M waited=Ns` | Verify the worker's report (see Verify worker output). |
+| `blocked seq=N srv=M` | Read the screen; answer from the packet or ask the owner. |
+| `stalled seq=N status=working srv=M quiet=Ns` | No screen change for stall-s while working: read the screen; a silent long step is possible, so re-arm if it is healthy. |
+| `backstop seq=N status=S srv=M` | Read the screen once and re-arm with the same baseline. |
+| `restarted seq=N status=S srv=M` | The Herdr server restarted and counters reset: read the screen, then re-run with the current seq as baseline and the new `srv`. |
+| `gone srv=M` | The worker exited or was replaced: read the pane and tell the owner. |
+| `error <message>` | Herdr could not be read: check `herdr status`, then tell the owner. |
+
+Pass each printed `srv` back as the last argument of the next run. Size the
+backstop to the slice: an hour suits most, longer for builds that run for
+hours. When a reported status looks wrong, debug detection with
+`herdr agent explain <pane_id> --json`. `herdr pane wait-output <pane_id>
+--match "<text>"` waits for specific output, such as a plan-mode menu.
+
+Two traps when reading panes and stopping jobs:
+
+- The text after `❯` in a Claude pane can be Claude Code's prompt suggestion,
+  not typed input; typing replaces it.
+- Stop a background job by its task id or PID. `pkill -f '<pattern>'` also
+  matches the orch's own command line when that holds the pattern, and kills
+  it.
 
 Maintain a compact registry in the existing task notes or handoff: orch
 identity; worker agent name, tab label, role, model; workspace/tab/pane ids;

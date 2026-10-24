@@ -167,19 +167,17 @@ appears, `plan-accepted` once accepted.
 
 ## Hands-off monitoring & completion
 
-After acceptance, only observe. Block on the terminal states in 3–5 minute
-check-in intervals — implementation, validation, and any QA regularly span many
-intervals, and the worker is never cut off because a wait expired:
+After acceptance, only observe. Record `completion_seq` (with `herdr agent get
+<name>`) just before accepting the plan, then run the parent skill's watcher
+with that baseline, as a background job — implementation, validation, and any
+QA regularly take hours, and the watcher spends nothing until the turn ends:
 
 ```bash
-herdr agent wait fix-loops --until done --timeout 300000
-herdr agent wait fix-loops --until blocked --timeout 300000
+<skill dir>/scripts/wait-turn.sh fix-loops <baseline>
 ```
 
-On expiry, read the screen and re-enter the wait. Treat `done` as finished only
-once `completion_seq` has risen past the value recorded (with `herdr agent get
-<name>`) just before accepting the plan, per the parent skill's *Track workers*
-rule. On `blocked`, read the screen and answer only a direct blocking question;
+Act on its line per the parent skill's *Track workers* table. On `blocked`,
+read the screen and answer only a direct blocking question;
 on a stop condition (errors it cannot resolve, out-of-scope request), stop and
 report. When the worker reports done, verify its claims per the parent skill:
 re-open cited files, inspect current command evidence, and review the diff

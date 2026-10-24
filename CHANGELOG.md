@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.2.0
+
+- Workers are tracked with `scripts/wait-turn.sh`, a shipped watcher the orch runs once per turn
+  as a background job. It waits on Herdr's own events and prints one line only when the turn
+  ends or something needs the orch (`finished`, `blocked`, `stalled`, `gone`, `restarted`,
+  `backstop`, `error`), so a long worker turn costs the orch no turns while it waits. It replaces
+  the `--until done` check-ins, which missed workers that settled as `idle` and woke the orch
+  every few minutes.
+- A finish counts when `completion_seq` rises past the baseline, or when the worker was seen
+  working and has settled, so a missing `completion_seq` no longer hides a finished turn.
+- A Herdr server restart is detected by the server socket's inode and reported, not read as a
+  finished turn.
+- New eval scenario 4, `idle-finish`: a worker whose tab the owner viewed settles as `idle`.
+- `SKILL.md` notes that text after `❯` in a Claude pane can be a prompt suggestion, and warns
+  against `pkill -f` patterns that match the orch's own command line.
+
 ## 0.1.0
 
 First release.

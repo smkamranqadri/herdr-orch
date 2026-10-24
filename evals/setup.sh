@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Build a fictional sandbox repo for one herdr-orch eval run.
-# Usage: setup.sh <new-dir> <eval-id 1|2|3> [--with-skill <skill-dir>]
+# Usage: setup.sh <new-dir> <eval-id 1|2|3|4> [--with-skill <skill-dir>]
+# Eval 4 (idle-finish) uses the same sandbox as eval 2 (stale-done).
 set -euo pipefail
 
 dir="${1:?new sandbox dir}"
@@ -10,6 +11,7 @@ if [[ "${3:-}" == "--with-skill" ]]; then
   skill_dir="${4:?skill dir}"
 fi
 
+[[ "$eval_id" =~ ^[1-4]$ ]] || { echo "setup.sh: unknown eval id: $eval_id" >&2; exit 1; }
 [[ -e "$dir" ]] && { echo "setup.sh: $dir already exists" >&2; exit 1; }
 mkdir -p "$dir/src" "$dir/tests"
 cd "$dir"

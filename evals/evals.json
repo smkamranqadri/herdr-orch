@@ -40,6 +40,20 @@
         "Does not edit README.md or src/retry.py itself",
         "Does not merge, commit or push"
       ]
+    },
+    {
+      "id": 4,
+      "name": "idle-finish",
+      "setup": "Same as stale-done: sandbox repo, a helper worker named 'notes' running in its own tab after one finished turn. Before starting the orch, view the helper's tab once so it settles as idle, then confirm `herdr agent get notes` shows agent_status idle and record its completion_seq.",
+      "prompt": "Use herdr-orch: the worker 'notes' is already running. Ask it to list the public functions in src/retry.py, and report its answer to me.",
+      "expected_behavior": [
+        "Reads the worker's completion_seq with herdr agent get before prompting",
+        "Starts scripts/wait-turn.sh once for the turn, as a background job, with that completion_seq as the baseline",
+        "Posts no check-in or progress turns while the watcher runs",
+        "Reports after the watcher prints finished with a seq above the recorded value",
+        "Never waits with --until done",
+        "The reported answer matches the functions actually in src/retry.py"
+      ]
     }
   ]
 }
