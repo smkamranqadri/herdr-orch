@@ -81,8 +81,8 @@ this should be rare; stall-seconds 0 turns the check off.
 
 ## Tasks
 
-- [ ] 1. `skills/herdr-orch/scripts/wait-turn.sh` per the contract, executable.
-- [ ] 2. `tests/test-wait-turn.sh`: a fake `herdr` on PATH that serves scripted `status` and
+- [x] 1. `skills/herdr-orch/scripts/wait-turn.sh` per the contract, executable.
+- [x] 2. `tests/test-wait-turn.sh`: a fake `herdr` on PATH that serves scripted `status` and
   `agent get` answers (including `revision`), returns Herdr's real timeout JSON with exit 1 for
   an expiring wait, and logs every `agent wait` argv. Cases: finished from idle, finished from
   done, finished with seq missing after being seen working, not finished when seq is missing and
@@ -101,10 +101,10 @@ this should be rare; stall-seconds 0 turns the check off.
   asserts the exact output line (`^...$`) and the exit code; wait calls assert the exact
   `--timeout` milliseconds; no logged call has `--until done`. Tests pass small stall and
   backstop values so the suite stays fast.
-- [ ] 3. Mutation check: break each rule in turn with a literal edit, watch its test fail,
+- [x] 3. Mutation check: break each rule in turn with a literal edit, watch its test fail,
   restore from a saved copy and prove the file byte-identical (`cmp`). Log to
   `$TMPDIR/herdr-orch-mutations.log`.
-- [ ] 4. `SKILL.md` "Track workers": record the baseline, start the script once per turn as a
+- [x] 4. `SKILL.md` "Track workers": record the baseline, start the script once per turn as a
   background job (Claude Code `run_in_background`; no tool timeout needed), do not check in or
   post progress turns while it runs, and act on each of its lines: `finished` verify the report;
   `blocked`, `stalled`, `gone`, `error` read the screen and tell the owner; `backstop` read the
@@ -114,19 +114,20 @@ this should be rare; stall-seconds 0 turns the check off.
   assumed one. Add: never `pkill -f`
   with a pattern that matches the orch's own command line; the text after `❯` in a Claude pane
   can be a prompt suggestion, not typed input.
-- [ ] 5. `references/plan-mode.md` "Hands-off monitoring": use the script instead of the
+- [x] 5. `references/plan-mode.md` "Hands-off monitoring": use the script instead of the
   done/blocked waits. The plan-review waits (`--until blocked`) stay.
-- [ ] 6. `evals/evals.json` scenario 4 `idle-finish` (the owner views the helper's tab first so
+- [x] 6. `evals/evals.json` scenario 4 `idle-finish` (the owner views the helper's tab first so
   it settles as `idle`; expected: runs `wait-turn.sh` once for the turn, reports `finished` with
   a risen seq, posts no check-in turns while waiting, never waits `--until done`);
   `evals/setup.sh` accepts id 4 with scenario 2's fixture; `tests/test-evals.sh` expects ids
   `[1, 2, 3, 4]`, runs `setup.sh` for id 4 and checks its fixture.
-- [ ] 7. `tests/test-install.sh`: the installed script exists and is executable.
-- [ ] 8. `CHANGELOG.md` line; `metadata.version` 0.1.0 to 0.2.0.
-- [ ] 9a. Live run, Claude Code orch: the script against a real worker turn of at least 10
-  minutes that settles as `idle`; record the output line and the orch's API calls from start to
+- [x] 7. `tests/test-install.sh`: the installed script exists and is executable.
+- [x] 8. `CHANGELOG.md` line; `metadata.version` 0.1.0 to 0.2.0.
+- [x] 9a. Live run, Claude Code orch: the script against a real worker turn of at least 10
+  minutes that settles as `idle` or `done` (owner decision, 2026-10-24: three runs settled `done`
+  because no tab was in view when the turn ended; `idle` is covered by the tests); record the output line and the orch's API calls from start to
   that line (from its session log).
-- [ ] 9b. Live run, Codex orch: a Codex orch in a Herdr tab (`--sandbox danger-full-access`, per
+- [x] 9b. Live run, Codex orch: a Codex orch in a Herdr tab (`--sandbox danger-full-access`, per
   [herdr.md](../knowledge/herdr.md)) runs the script against a worker turn of at least 10
   minutes; record how Codex ran it (tool, timeout, any mid-call yields) and its API calls while
   waiting (from its session log). The orch launch is proposed to the owner first.
@@ -142,7 +143,8 @@ running the evals, README changes beyond text that names the wait, any change to
 - Each guard's mutation trips its test, and the restore is byte-identical.
 - `grep -rn -- '--until done' skills/` finds nothing.
 - `SKILL.md` stays under 500 lines.
-- 9a prints `finished seq=N status=idle srv=M waited=Ns` with `waited` of at least 600, M the live
+- 9a prints `finished seq=N status=S srv=M waited=Ns`, S `idle` or `done`, with `waited` of at least
+  600, M the live
   socket's inode, and the Claude orch makes no API call between starting the script and that
   line.
 - 9b's Codex run is recorded with its actual API calls while waiting, and `SKILL.md`'s Codex
@@ -174,3 +176,5 @@ running the evals, README changes beyond text that names the wait, any change to
 - [fixed] The stall clock could include time spent stopped - it starts when the worker enters working and restarts on each revision change; long-stopped-then-short-working tested
 - [fixed] A healthy silent step reads as stalled - documented in the contract and Risks; stall-seconds 0 turns it off; a quiet step under the budget is tested
 - [fixed] The Codex foreground recipe was unverified and the live gate could pass on a short turn - the owner chose to verify Codex here: task 9b runs a Codex orch live; 9a and 9b need turns of at least 10 minutes and record API calls from session logs
+- Reviewed: waived by the owner 2026-10-24; plan hash 04c84177d1f8
+- Reviewed: waived by the owner 2026-10-24; plan hash a6ab85637947
