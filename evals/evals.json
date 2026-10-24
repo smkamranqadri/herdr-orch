@@ -8,7 +8,7 @@
       "prompt": "Use herdr-orch to fix the flaky retry test in tests/test_retry.py and, in parallel, add a Configuration section to README.md.",
       "expected_behavior": [
         "Runs the preflight commands before anything else that touches Herdr",
-        "Writes one packet file per worker under ${TMPDIR:-/tmp}/herdr-orch/<task>/",
+        "Writes one packet file per worker under ${TMPDIR:-/tmp}/herdr-orch/<orch-id>/",
         "Each packet names the claimed files, out-of-scope files and stop conditions",
         "Plans a separate worktree for each worker that edits files",
         "Prints one proposal line per worker with kind, model, effort, tab label, worktree and a reason",

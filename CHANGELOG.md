@@ -2,6 +2,10 @@
 
 ## 0.3.0
 
+- Several orchs can share a project: each picks an unused orch id that prefixes its agent
+  names, worktree branches and brief folder, acts only on what its registry holds, and before
+  integrating checks the main checkout is clean and trial-merges the worker branch with
+  `git merge-tree`.
 - `bootstrap.sh` `install` and `update` ask whether to add an `autoMode.allow` rule to
   `~/.claude/settings.json` that lets a Claude Code orch in auto mode launch workers
   (`--claude-automode yes|no` answers without asking). A yes keeps a backup and prints the diff.

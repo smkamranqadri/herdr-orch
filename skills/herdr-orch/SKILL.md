@@ -33,9 +33,9 @@ Two names per worker, both required at launch:
 
 - **tab label** — `<model>: <slice>`, e.g. `opus: fix loops`, `codex: audit
   auth`. Free text; keep it short, tab bars truncate.
-- **agent name** — the slice as a slug, e.g. `fix-loops`. Must match
-  `[a-z][a-z0-9_-]{0,31}` and be unique among live agents. Every `agent …` verb
-  accepts it in place of a pane id.
+- **agent name** — `<orch-id>-<slice>`, e.g. `perms-fix-loops`. The whole
+  name must match `[a-z][a-z0-9_-]{0,31}` and be unique among live agents.
+  Every `agent …` verb accepts it in place of a pane id.
 
 ## Workers are TUIs — no headless runners
 
@@ -62,6 +62,9 @@ interrupt it (`herdr pane send-keys <pane_id> ctrl+c`) and relaunch through
   verbs, `w2:t3` / `w2:p4` for tab and pane verbs — never by guessed position.
 - Pass `--no-focus` on every creating verb (`tab create`, `workspace create`,
   `worktree create`, `pane split`); use focus verbs only when the user asks.
+- Act only on the tabs, panes, agents and worktrees in your registry, plus agents
+  the owner names (record them first). Other orchs may share the workspace;
+  anything else is read-only to you.
 - Retire every worker you launch when its assignment and planned integration
   follow-ups are finished (see Retire workers).
 
@@ -95,6 +98,12 @@ Check/install only the integration for each selected runtime. Reuse this
 preflight in the same workspace while the daemon and integrations are unchanged;
 a new packet alone does not require repeating it.
 
+Pick an orch id: the task slug, for example `perms`. It must be unused: no live
+agent in `herdr agent list` starts with `<orch-id>-`, `git branch --list
+'<orch-id>-*'` is empty, and `${TMPDIR:-/tmp}/herdr-orch/<orch-id>/` does not
+exist. Record it in the registry; it prefixes every agent name, worktree
+branch and brief folder.
+
 A Codex orch needs access to the Herdr socket: its default sandbox fails every
 `herdr` command with `PermissionDenied`. If `herdr status` fails that way, stop
 and ask the owner to restart the orch with `--sandbox danger-full-access`.
@@ -102,7 +111,7 @@ and ask the owner to restart the orch with `--sandbox danger-full-access`.
 ## Delegation packets
 
 Write each packet to a file,
-`${TMPDIR:-/tmp}/herdr-orch/<task>/<agent-name>.md`, and send the worker only a
+`${TMPDIR:-/tmp}/herdr-orch/<orch-id>/<agent-name>.md`, and send the worker only a
 pointer: `The user asked for this: read <packet path> in full and follow it.`
 For a follow-up, update the packet file and point at the changed part. Each
 packet is a standalone contract. Include:
@@ -135,8 +144,8 @@ Before launching, print one line per worker and wait for the owner's go:
 
 ```text
 NAME | KIND | MODEL | EFFORT | TAB LABEL | WORKTREE yes/no | reason
-fix-loops | claude | opus | high | "opus: fix loops" | yes | touches retry core
-audit-auth | codex | <model> | medium | "codex: audit auth" | no | read-only review
+perms-fix-loops | claude | opus | high | "opus: fix loops" | yes | touches retry core
+perms-audit-auth | codex | <model> | medium | "codex: audit auth" | no | read-only review
 ```
 
 Choose model and effort by the slice's difficulty and say why in `reason`. One
@@ -151,7 +160,7 @@ natively, each as its own labeled workspace:
 
 ```bash
 herdr worktree create --workspace "$HERDR_WORKSPACE_ID" \
-  --branch <slug> --label "<slug>" --no-focus
+  --branch <agent-name> --label "<agent-name>" --no-focus
 ```
 
 Create the worker's tab inside that workspace (`tab create --workspace
@@ -168,10 +177,10 @@ herdr tab create --workspace "$HERDR_WORKSPACE_ID" --cwd "$PWD" \
   --label "opus: fix loops" --no-focus
 
 # 2. worker TUI in that tab's root pane; native flags follow `--`
-herdr agent start fix-loops --kind claude --pane <root_pane_id> -- \
+herdr agent start perms-fix-loops --kind claude --pane <root_pane_id> -- \
   --model opus --effort high --dangerously-skip-permissions "<pointer>"
 
-herdr agent start audit-auth --kind codex --pane <root_pane_id> -- \
+herdr agent start perms-audit-auth --kind codex --pane <root_pane_id> -- \
   -m <model> -c model_reasoning_effort=medium --yolo
 ```
 
@@ -227,7 +236,7 @@ honoring the pane's live bracketed-paste mode, and `--wait` blocks until the
 worker settles:
 
 ```bash
-herdr agent prompt fix-loops \
+herdr agent prompt perms-fix-loops \
   "The user asked for this: read <packet path> §Follow-up 2 and follow it." \
   --wait --timeout 300000
 ```
@@ -270,7 +279,7 @@ Then start the watcher once for the turn, as a background job (Claude Code:
 holding this SKILL.md (installed: `~/.agents/skills/herdr-orch`):
 
 ```bash
-<skill dir>/scripts/wait-turn.sh fix-loops <baseline> [stall-s 600] [backstop-s 3600] [srv]
+<skill dir>/scripts/wait-turn.sh perms-fix-loops <baseline> [stall-s 600] [backstop-s 3600] [srv]
 ```
 
 It blocks on Herdr's own waits and prints one line only when something
@@ -339,6 +348,12 @@ changing focus:
   worker did not cover, plus any checks required by project policy. A worker
   handoff alone does not invalidate evidence or require a second full suite.
 - Review the final diff before accepting any worker patch.
+- Before integrating, check that `git status` in the main checkout is clean,
+  with no merge, rebase or cherry-pick in progress; another orch may be
+  mid-merge. If not, stop and tell the owner.
+- Have the worker commit its work, then trial-merge its branch tip against
+  current main: `git merge-tree --write-tree main <branch>`. A conflict, for
+  example with another orch's merged work, goes to the owner.
 - If a worker edits outside its claim, pause integration and ask the owner to
   choose: accept, send the cleanup back to that worker, or reject the patch.
   Recommend one.
