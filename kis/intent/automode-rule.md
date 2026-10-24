@@ -45,10 +45,10 @@ offer it. Add nothing unnecessary to the skill or KIS.
   `allow` list without `"$defaults"` keeps none. Mutation-check each guard.
 - [x] 3. `SKILL.md` blocked-launch rule per the decision.
 - [x] 4. `README.md` one sentence under Quick start; `CHANGELOG.md` 0.3.0 line.
-- [ ] 5. Owner's live run, when the owner chooses (it installs 0.3.0 over the copy other orchs
+- [x] 5. Owner's live run, when the owner chooses (it installs 0.3.0 over the copy other orchs
   read): `./bootstrap.sh update --source . --claude-automode yes`, then a new Claude session
   launches one haiku worker. Until then it is recorded as not run.
-  Status: not run (2026-10-25); waits for the owner.
+  Status: done 2026-10-25. The owner ran the update; the launch ran from the existing orch session, not a new one (owner approved), and passed.
 
 ## Out of scope
 
