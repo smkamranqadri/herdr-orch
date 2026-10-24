@@ -4,7 +4,7 @@ description: "Coordinates Claude Code and Codex worker agents from one orch sess
 disable-model-invocation: true
 metadata:
   author: smkamranqadri
-  version: "0.2.0"
+  version: "0.2.1"
 ---
 
 # herdr-orch
@@ -237,8 +237,10 @@ Orch reads never mark a tab seen, so an unfocused worker settles as `done`, but
 a tab the user has viewed settles as `idle`; both mean stopped. Neither tracks
 turns: a worker still `done` from its last turn matches a wait at once. Before
 each prompt, record the worker's `completion_seq` from `herdr agent get <name>`
-as the turn's baseline (`0` for a fresh worker; Herdr omits the field while a
-worker is working, and on some agents altogether).
+as the turn's baseline (Herdr omits the field while a worker is working, and on
+some agents altogether). With no recorded value, pass `auto`, never `0`: a
+stopped worker that has run turns reads as finished at once against `0`. Use
+`0` only for a worker this orch launched in this run.
 
 Then start the watcher once for the turn, as a background job (Claude Code:
 `run_in_background`, no tool timeout needed). `<skill dir>` is the folder

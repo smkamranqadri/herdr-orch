@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1
+
+- `SKILL.md`: with no recorded `completion_seq`, start the watcher with baseline `auto`, never
+  `0`. A stopped worker that has run turns reads as finished at once against `0`.
+
 ## 0.2.0
 
 - Workers are tracked with `scripts/wait-turn.sh`, a shipped watcher the orch runs once per turn

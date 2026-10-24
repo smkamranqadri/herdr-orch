@@ -155,6 +155,10 @@ run '{"status":["A"],"get":['"$W"',{"st":"idle","seq":3}],"wait":[{"ok":5}]}' \
 # auto: stopped with a seq at start becomes the baseline
 run '{"status":["A"],"get":[{"st":"idle","seq":4},{"st":"idle","seq":4},{"st":"done","seq":5}]}' \
   "finished seq=5 status=done srv=$A waited=60s" 0 30000 30000 -- w1 auto
+# baseline 0 on a stopped worker that has run turns reads as finished at once: SKILL.md says use
+# auto there, never 0
+run '{"status":["A"],"get":[{"st":"idle","seq":50}]}' \
+  "finished seq=50 status=idle srv=$A waited=0s" 0 -- w1 0
 # auto: stopped with no seq, then idle(12) without working: never finished
 run '{"status":["A"],"get":[{"st":"idle"},{"st":"idle","seq":12}]}' \
   "backstop seq=12 status=idle srv=$A" 0 30000 30000 -- w1 auto 600 60
