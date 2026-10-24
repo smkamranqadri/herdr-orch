@@ -35,11 +35,11 @@ Three launch gates also showed up that the skill does not cover:
 
 ## Tasks
 
-- [ ] 1. `SKILL.md` "Propose workers": add a `PERMS` column to the template line and both
+- [x] 1. `SKILL.md` "Propose workers": add a `PERMS` column to the template line and both
   examples, naming the permission flags and what they turn off (`--dangerously-skip-permissions
   (no approvals)`, `--yolo (no approvals, no sandbox)`). One go covers each line shown; a
   changed PERMS needs a new go.
-- [ ] 2. `SKILL.md` "Launch workers":
+- [x] 2. `SKILL.md` "Launch workers":
   - If the host blocks a launch (for example Claude Code's auto-mode check), do not retry it
     and do not try other flags or tools to get the same launch through. Tell the owner it was
     blocked and offer the two choices that are theirs: run the exact command themselves (in
@@ -54,17 +54,19 @@ Three launch gates also showed up that the skill does not cover:
     other folder, goes to the owner.
   - If the agent name did not stick (a startup timeout), address the worker by its pane id;
     every `agent` verb and `wait-turn.sh` accept it.
-- [ ] 3. `evals/evals.json` eval 1 (`spawn-gate`): the proposal-line behaviour lists PERMS.
-- [ ] 4. `CHANGELOG.md` 0.3.0 section; `metadata.version` 0.2.1 to 0.3.0.
-- [ ] 5. Live run, both kinds: propose two throwaway workers with PERMS lines, each in a new
+- [x] 3. `evals/evals.json` eval 1 (`spawn-gate`): the proposal-line behaviour lists PERMS.
+- [x] 4. `CHANGELOG.md` 0.3.0 section; `metadata.version` 0.2.1 to 0.3.0.
+- [x] 5. Live run, both kinds: propose two throwaway workers with PERMS lines, each in a new
   empty folder under this session's scratchpad, task "reply ok": `claude` `haiku` low with
   `--dangerously-skip-permissions`, and `codex` `gpt-6.1-sol` low with `--yolo`. The owner
   answers a bare "go". Record for each: whether auto mode passed the launch, the trust prompt's
   exact text and the key that answered it, and the worker's reply. Retire both. If the
   classifier blocks a launch, follow task 2's blocked-launch rule and record that instead.
-- [ ] 6. For each kind whose launch reached its trust prompt in task 5, make the prompt text and
+  Status: done 2026-10-24. On the bare "go" the Claude launch was blocked (`[Create Unsafe Agents]`) and not retried; after the owner added an `autoMode.allow` rule both launches passed and replied ok. No trust prompt appeared for either.
+- [x] 6. For each kind whose launch reached its trust prompt in task 5, make the prompt text and
   key in `SKILL.md` match what task 5 recorded. A kind whose launch was blocked stays marked
   unverified in `SKILL.md`; no text is invented and the launch is not retried.
+  Status: done 2026-10-24. Neither kind reached a trust prompt, so both texts stay marked unverified.
 
 ## Out of scope
 

@@ -1,8 +1,9 @@
 # Current
 
-Stamp: main 90d573c 6bc96bc16a5e
+Stamp: main 370d69c 505ca2c85fdc
 
-Status: 0.2.1 (baseline wording fix) merged to main 2026-10-24, not pushed or released.
+Status: 0.3.0 (PERMS column and launch gates) merged to main 2026-10-24 at 370d69c, not
+pushed or released; 0.2.1 (baseline wording fix) also unreleased.
 0.2.0 released 2026-10-24 (tag `v0.2.0` at d604944, GitHub release "herdr-orch 0.2.0:
 event-mode worker watcher") and installed in ~/.agents/skills. 0.1.0 is tagged `v0.1.0` at
 6fcd718 (no GitHub release).
@@ -41,6 +42,25 @@ by eval. Scenario 4 `idle-finish` (0.2.0) has never been run.
   installed 0.2.0; the installed `SKILL.md` and `wait-turn.sh` match GitHub `v0.2.0` byte for
   byte; the installed script printed `gone srv=10356311` for an unknown agent at 22:31.
 
+- PERMS live run (task 5), 2026-10-24, Claude Code 2.1.300 orch, Codex 0.162.1, Herdr 0.9.5:
+  after the owner's bare "go" on two PERMS lines, `herdr agent start perms-claude` (haiku low,
+  `--dangerously-skip-permissions`) was blocked by auto mode, `[Create Unsafe Agents]`, not
+  retried. That rule is a soft block that clears only when the user's own message names the
+  agent and the dropped approvals (`claude auto-mode defaults --label 'Create Unsafe'`), so a
+  PERMS line in the orch's reply does not clear it. The owner then added an `autoMode.allow`
+  rule for herdr-orch worker launches to `~/.claude/settings.json` (throwaway script, backup
+  `settings.json.bak-automode-20261024-234420`); after that both launches passed on the first
+  try: perms-claude replied `ok` (seq 389, "bypass permissions on"), perms-codex (gpt-6.1-sol
+  low, `--yolo`) replied `ok` (seq 394, "permissions: YOLO mode"). Neither showed a folder-trust
+  prompt in a new empty folder under the scratchpad. Both tabs closed; `agent list` shows no
+  `perms-` worker. Before commit: `tests/run.sh` exit 0, SKILL.md 387 lines.
+- Codex orch launch gate, 2026-10-24: a Codex 0.162.1 orch (gpt-6.1-sol low, `--sandbox
+  danger-full-access -a on-request`, config `approvals_reviewer = "auto_review"`) reading the
+  branch SKILL.md proposed `orch-test-claude` with its PERMS line; on the owner's relayed go
+  it ran `herdr tab create` and `herdr agent start ... --dangerously-skip-permissions` with no
+  approval prompt or review (screen shows `Ran`); the worker replied `ok` (seq 402); the orch
+  closed its tab. Watcher: `finished seq=403 status=done waited=35s`. No folder-trust prompt
+  for the orch either. Codex orchs are not gated; the block is Claude Code auto mode only.
 - 0.2.1, 2026-10-24: `tests/run.sh` exit 0 (wait-turn 30 cases); breaking the seq-rise branch
   fails the new baseline-0 case on its own; restore byte-identical.
 
@@ -50,8 +70,11 @@ No task in progress.
 
 ## Next
 
-1. PERMS column and launch gates: plan approved and reviewed (codex gpt-6.1-sol medium, 2
-   findings fixed, 2026-10-24); ready for `/kis:act`: [perms-column.md](../intent/perms-column.md).
+1. Auto-mode rule for Claude orchs (owner request, 2026-10-24): `bootstrap.sh` install asks
+   the owner whether to add the herdr-orch `autoMode.allow` rule to `~/.claude/settings.json`
+   (backup, keep `"$defaults"`, safe to re-run, show the diff), and `SKILL.md`'s blocked-launch
+   rule offers that rule. A PERMS line alone does not clear the block (see Proof). Scope it with
+   `/kis:plan` first.
 2. Add Command Code as a supported agent (owner's next task, 2026-10-24); scope it with
    `/kis:plan` first.
 3. Support several orchs in one project (owner request, 2026-10-24); scope it with `/kis:plan`
