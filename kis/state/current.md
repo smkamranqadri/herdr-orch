@@ -102,8 +102,9 @@ No task in progress.
 
 ## Next
 
-1. Add Command Code as a supported agent (owner's next task, 2026-10-24); scope it with
-   `/kis:plan` first.
+1. Command Code as a worker kind: plan approved and reviewed 2026-10-25 (codex gpt-6.1-sol
+   medium, 4 fixed); ready for `/kis:act`:
+   [command-code.md](../intent/command-code.md).
 2. Remove plan-first delegation (`references/plan-mode.md` and its `SKILL.md` section): the owner
    plans with KIS instead (2026-10-25). Scope it with `/kis:plan` first.
 3. Run the four eval scenarios (scenario 4 `idle-finish` is new in 0.2.0) against the current
