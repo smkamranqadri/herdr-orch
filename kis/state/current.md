@@ -1,8 +1,8 @@
 # Current
 
-Stamp: main 5a311ec e90f524ea25d
+Stamp: main 2fb7b08 cd348a889a76
 
-Status: 0.3.0 (launch gates) on main, not pushed or released: merged 2026-10-24 at 370d69c;
+Status: 0.3.0 (launch gates, installer auto-mode rule at 2fb7b08) on main, not pushed or released: merged 2026-10-24 at 370d69c;
 the PERMS column was reverted on 2026-10-25 at a12f7bf at the owner's request (the classifier
 ignores it); trust-prompt key fixed 2026-10-25 at 5a311ec. 0.2.1 (baseline wording fix)
 also unreleased.
@@ -80,6 +80,11 @@ by eval. Scenario 4 `idle-finish` (0.2.0) has never been run.
   trust this folder" (seen on a second read; the first read came too soon); `enter`; the worker
   replied `ok` (`finished seq=19 status=done waited=5s`). SKILL.md now says down, check, enter.
   `tests/run.sh` exit 0. Tab closed.
+- Auto-mode installer, 2026-10-25 (2fb7b08): `tests/run.sh` exit 0 (install cases 8-16);
+  12/12 guard mutations tripped their case, restores byte-identical
+  (`$TMPDIR/automode-mutations.log`, scratchpad); a pty run asked `[y/N]`, `y` added the rule,
+  `n` and Enter skipped; on a copy of the owner's settings the diff was one line (old rule to
+  new). The owner's live run (task 5) has not run.
 - 0.2.1, 2026-10-24: `tests/run.sh` exit 0 (wait-turn 30 cases); breaking the seq-rise branch
   fails the new baseline-0 case on its own; restore byte-identical.
 
@@ -89,9 +94,10 @@ No task in progress.
 
 ## Next
 
-1. Installer offers the auto-mode rule: plan approved and reviewed 2026-10-25 (codex
-   gpt-6.1-sol medium, 5 findings fixed); ready for `/kis:act`:
-   [automode-rule.md](../intent/automode-rule.md).
+1. Owner's live run of the auto-mode installer (task 5 of
+   [automode-rule.md](../intent/automode-rule.md)), when the owner chooses: it installs 0.3.0
+   over the copy other orchs read. `./bootstrap.sh update --source . --claude-automode yes`, then
+   a new Claude session launches one haiku worker.
 2. Add Command Code as a supported agent (owner's next task, 2026-10-24); scope it with
    `/kis:plan` first.
 3. Support several orchs in one project (owner request, 2026-10-24); scope it with `/kis:plan`

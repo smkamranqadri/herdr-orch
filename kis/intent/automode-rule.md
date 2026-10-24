@@ -35,19 +35,20 @@ offer it. Add nothing unnecessary to the skill or KIS.
 
 ## Tasks
 
-- [ ] 1. `bootstrap.sh`: the question, `--claude-automode yes|no`, the edit (Ruby JSON), the
+- [x] 1. `bootstrap.sh`: the question, `--claude-automode yes|no`, the edit (Ruby JSON), the
   usage text.
-- [ ] 2. `tests/test-install.sh`, temp home only: yes adds the rule with `"$defaults"` and a
+- [x] 2. `tests/test-install.sh`, temp home only: yes adds the rule with `"$defaults"` and a
   backup, and every other key is unchanged; a re-run changes nothing; the old rule is replaced;
   no leaves the file byte-identical; no terminal (run under `setsid`, so `/dev/tty` cannot open)
   and no flag leaves it untouched and prints the hint; invalid JSON and an `allow` that is not a
   list error and leave it untouched; no `~/.claude` asks nothing and creates nothing; an existing
   `allow` list without `"$defaults"` keeps none. Mutation-check each guard.
-- [ ] 3. `SKILL.md` blocked-launch rule per the decision.
-- [ ] 4. `README.md` one sentence under Quick start; `CHANGELOG.md` 0.3.0 line.
+- [x] 3. `SKILL.md` blocked-launch rule per the decision.
+- [x] 4. `README.md` one sentence under Quick start; `CHANGELOG.md` 0.3.0 line.
 - [ ] 5. Owner's live run, when the owner chooses (it installs 0.3.0 over the copy other orchs
   read): `./bootstrap.sh update --source . --claude-automode yes`, then a new Claude session
   launches one haiku worker. Until then it is recorded as not run.
+  Status: not run (2026-10-25); waits for the owner.
 
 ## Out of scope
 
