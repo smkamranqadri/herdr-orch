@@ -4,7 +4,7 @@ description: "Coordinates Claude Code and Codex worker agents from one orch sess
 disable-model-invocation: true
 metadata:
   author: smkamranqadri
-  version: "0.2.1"
+  version: "0.3.0"
 ---
 
 # herdr-orch
@@ -134,13 +134,15 @@ remaining work instead of a fresh discovery assignment.
 Before launching, print one line per worker and wait for the owner's go:
 
 ```text
-NAME | KIND | MODEL | EFFORT | TAB LABEL | WORKTREE yes/no | reason
-fix-loops | claude | opus | high | "opus: fix loops" | yes | touches retry core
-audit-auth | codex | <model> | medium | "codex: audit auth" | no | read-only review
+NAME | KIND | MODEL | EFFORT | TAB LABEL | WORKTREE yes/no | PERMS | reason
+fix-loops | claude | opus | high | "opus: fix loops" | yes | --dangerously-skip-permissions (no approvals) | touches retry core
+audit-auth | codex | <model> | medium | "codex: audit auth" | no | --yolo (no approvals, no sandbox) | read-only review
 ```
 
-Choose model and effort by the slice's difficulty and say why in `reason`. One
-go covers the lines shown; a new or changed worker needs a new go.
+Choose model and effort by the slice's difficulty and say why in `reason`.
+`PERMS` names the worker's permission flags and what they turn off, so the
+owner's go approves them by name. One go covers each line shown; a new or
+changed worker, or a changed `PERMS`, needs a new go.
 
 ## Worktree isolation
 
@@ -181,7 +183,15 @@ screen reads need all three.
 Claude always launches with `--dangerously-skip-permissions` and Codex with
 `--yolo` — workers run unattended and must not stall on permission prompts.
 Plan-first runs add Claude's `--permission-mode plan`; the flags compose (see
-Plan-first delegation).
+Plan-first delegation). Never change a worker's permission flags (for example to
+`--permission-mode acceptEdits`) unless the owner names that choice.
+
+If the host blocks a launch (for example Claude Code's auto-mode check), do not
+retry it and do not try other flags or tools to get the same launch through.
+Tell the owner it was blocked and offer the two choices that are theirs: run the
+exact command themselves (in Claude Code, `! <command>`), or add the allow rule
+`Bash(herdr agent start:*)`, which pre-approves every launch with any flags.
+Then wait.
 
 `agent start` returns success only after Herdr detects the agent ready, so a
 non-zero exit is the launch failure — read the tab's root pane (`herdr pane read
@@ -192,6 +202,18 @@ label, restore it:
 ```bash
 herdr tab rename <tab_id> "opus: fix loops"
 ```
+
+On `agent_not_ready`, read the pane. A TUI asks before it works in a folder it
+has not seen: Claude asks "Is this a project you created or one you trust?" and
+Codex asks "Trust this folder?" with "1. Trust and continue" (both unverified).
+If the pane shows that folder-trust prompt and the folder it names is the
+worker's recorded launch folder (the tab's `--cwd` from the approved proposal),
+answer the default option with `herdr agent send-keys <name> enter`, then
+confirm with `herdr agent get <name>` that the worker is working. Any other
+dialog, or a trust prompt for any other folder, goes to the owner.
+
+If the agent name did not stick (a startup timeout), address the worker by its
+pane id; every `agent` verb and `wait-turn.sh` accept it.
 
 ## Sending prompts to running TUIs
 
