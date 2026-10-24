@@ -30,13 +30,13 @@ nothing unnecessary to the skill or KIS.
 
 ## Tasks
 
-- [ ] 1. `SKILL.md`: the orch id in Preflight; the prefix in the naming rule, the worktree
+- [x] 1. `SKILL.md`: the orch id in Preflight; the prefix in the naming rule, the worktree
   `--branch` and the brief path; the registry-only rule in Invariants; the clean-checkout and
   trial-merge checks in "Verify worker output". The example names become `perms-fix-loops` and
   `perms-audit-auth` throughout `SKILL.md` (`references/plan-mode.md` is left alone: the owner
   will remove plan mode).
-- [ ] 2. `evals/evals.json` spawn-gate: the brief path is `${TMPDIR:-/tmp}/herdr-orch/<orch-id>/`.
-- [ ] 3. `CHANGELOG.md` 0.3.0 line.
+- [x] 2. `evals/evals.json` spawn-gate: the brief path is `${TMPDIR:-/tmp}/herdr-orch/<orch-id>/`.
+- [x] 3. `CHANGELOG.md` 0.3.0 line.
 
 ## Out of scope
 

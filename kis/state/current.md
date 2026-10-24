@@ -1,9 +1,9 @@
 # Current
 
-Stamp: main 2057586 cd348a889a76
+Stamp: main b3c07a6 c0a2919f6f92
 
-Status: 0.3.0 (launch gates, installer auto-mode rule at 2fb7b08) on main and installed in
-~/.agents/skills 2026-10-25, not pushed or released: merged 2026-10-24 at 370d69c;
+Status: 0.3.0 (launch gates, installer auto-mode rule at 2fb7b08, multi-orch rules) on main;
+the multi-orch rules are not in the copy installed in ~/.agents/skills 2026-10-25, not pushed or released: merged 2026-10-24 at 370d69c;
 the PERMS column was reverted on 2026-10-25 at a12f7bf at the owner's request (the classifier
 ignores it); trust-prompt key fixed 2026-10-25 at 5a311ec. 0.2.1 (baseline wording fix)
 also unreleased.
@@ -91,6 +91,10 @@ by eval. Scenario 4 `idle-finish` (0.2.0) has never been run.
   From this orch session, `herdr agent start rule-check` (haiku low,
   `--dangerously-skip-permissions`) passed auto mode on the first try and replied `ok`. Not
   tested from a new Claude session.
+- Multi-orch rules, 2026-10-25: `tests/run.sh` exit 0 (test-skill checked Herdr 0.9.5);
+  SKILL.md 403 lines; no unprefixed `fix-loops`/`audit-auth` in SKILL.md; the brief path appears
+  only as `herdr-orch/<orch-id>/`; in a throwaway repo `git merge-tree --write-tree main <branch>`
+  exited 0 on a clean merge and 1 on a conflict. No live run with two orchs (out of scope).
 - 0.2.1, 2026-10-24: `tests/run.sh` exit 0 (wait-turn 30 cases); breaking the seq-rise branch
   fails the new baseline-0 case on its own; restore byte-identical.
 
@@ -102,9 +106,7 @@ No task in progress.
 
 1. Add Command Code as a supported agent (owner's next task, 2026-10-24); scope it with
    `/kis:plan` first.
-2. Several orchs in one project: plan approved and reviewed 2026-10-25 (codex gpt-6.1-sol
-   medium, 5 fixed, 2 rejected); ready for `/kis:act`: [multi-orch.md](../intent/multi-orch.md).
-3. Remove plan-first delegation (`references/plan-mode.md` and its `SKILL.md` section): the owner
+2. Remove plan-first delegation (`references/plan-mode.md` and its `SKILL.md` section): the owner
    plans with KIS instead (2026-10-25). Scope it with `/kis:plan` first.
-4. Run the four eval scenarios (scenario 4 `idle-finish` is new in 0.2.0) against the current
+3. Run the four eval scenarios (scenario 4 `idle-finish` is new in 0.2.0) against the current
    version to prove the fixes, after the owner approves the harness, model and effort.
