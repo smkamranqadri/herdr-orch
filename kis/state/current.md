@@ -1,15 +1,10 @@
 # Current
 
-Stamp: main b3c07a6 c0a2919f6f92
+Stamp: main 6f3b551 c0a2919f6f92
 
-Status: 0.3.0 (launch gates, installer auto-mode rule at 2fb7b08, multi-orch rules) on main;
-the multi-orch rules are not in the copy installed in ~/.agents/skills 2026-10-25, not pushed or released: merged 2026-10-24 at 370d69c;
-the PERMS column was reverted on 2026-10-25 at a12f7bf at the owner's request (the classifier
-ignores it); trust-prompt key fixed 2026-10-25 at 5a311ec. 0.2.1 (baseline wording fix)
-also unreleased.
-0.2.0 released 2026-10-24 (tag `v0.2.0` at d604944, GitHub release "herdr-orch 0.2.0:
-event-mode worker watcher") and installed in ~/.agents/skills. 0.1.0 is tagged `v0.1.0` at
-6fcd718 (no GitHub release).
+Status: 0.3.0 released 2026-10-25 (tag `v0.3.0` at 6f3b551, GitHub release "herdr-orch 0.3.0:
+launch gates, auto-mode rule, several orchs"; includes the unreleased 0.2.1) and installed in
+~/.agents/skills from the tag. 0.2.0 is tagged `v0.2.0` at d604944, 0.1.0 `v0.1.0` at 6fcd718.
 
 ## Evals
 
@@ -95,6 +90,9 @@ by eval. Scenario 4 `idle-finish` (0.2.0) has never been run.
   SKILL.md 403 lines; no unprefixed `fix-loops`/`audit-auth` in SKILL.md; the brief path appears
   only as `herdr-orch/<orch-id>/`; in a throwaway repo `git merge-tree --write-tree main <branch>`
   exited 0 on a clean merge and 1 on a conflict. No live run with two orchs (out of scope).
+- Release 0.3.0, 2026-10-25: `tests/run.sh` exit 0 on 6f3b551; CI run 40136527746 passed on
+  6f3b551; `bootstrap.sh update --ref v0.3.0` installed it (auto-mode rule already present) and
+  `bootstrap.sh check --ref v0.3.0` reports current.
 - 0.2.1, 2026-10-24: `tests/run.sh` exit 0 (wait-turn 30 cases); breaking the seq-rise branch
   fails the new baseline-0 case on its own; restore byte-identical.
 
