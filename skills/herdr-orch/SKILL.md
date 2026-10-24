@@ -134,15 +134,13 @@ remaining work instead of a fresh discovery assignment.
 Before launching, print one line per worker and wait for the owner's go:
 
 ```text
-NAME | KIND | MODEL | EFFORT | TAB LABEL | WORKTREE yes/no | PERMS | reason
-fix-loops | claude | opus | high | "opus: fix loops" | yes | --dangerously-skip-permissions (no approvals) | touches retry core
-audit-auth | codex | <model> | medium | "codex: audit auth" | no | --yolo (no approvals, no sandbox) | read-only review
+NAME | KIND | MODEL | EFFORT | TAB LABEL | WORKTREE yes/no | reason
+fix-loops | claude | opus | high | "opus: fix loops" | yes | touches retry core
+audit-auth | codex | <model> | medium | "codex: audit auth" | no | read-only review
 ```
 
-Choose model and effort by the slice's difficulty and say why in `reason`.
-`PERMS` names the worker's permission flags and what they turn off, so the
-owner's go approves them by name. One go covers each line shown; a new or
-changed worker, or a changed `PERMS`, needs a new go.
+Choose model and effort by the slice's difficulty and say why in `reason`. One
+go covers the lines shown; a new or changed worker needs a new go.
 
 ## Worktree isolation
 

@@ -2,8 +2,6 @@
 
 ## 0.3.0
 
-- The worker proposal line has a `PERMS` column naming each worker's permission flags and what
-  they turn off, so the owner's go approves them by name. A changed `PERMS` needs a new go.
 - `SKILL.md` "Launch workers": a launch the host blocks is not retried or reworked; the orch
   offers the owner the exact command or the allow rule `Bash(herdr agent start:*)` and waits. The
   orch never changes a worker's permission flags unless the owner names that choice.
