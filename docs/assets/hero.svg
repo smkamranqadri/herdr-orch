@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 380" width="960" height="380" role="img" aria-labelledby="t d">
+  <title id="t">herdr-orch: one orch session coordinates worker agents in Herdr</title>
+  <desc id="d">The orch proposes each worker with its model and worktree and waits for your go. Each worker then runs in its own Herdr tab and worktree, and the orch counts a turn finished only when completion_seq rises, then verifies the diff.</desc>
+  <style>
+    .bg { fill: #f6f8fa; }
+    .card { fill: #ffffff; stroke: #d0d7de; stroke-width: 1.5; }
+    .head { fill: #1f2328; font: 600 17px ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+    .muted { fill: #59636e; font: 13px ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+    .mono { fill: #1f2328; font: 12.5px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .monomuted { fill: #59636e; font: 12.5px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .bubble { fill: #ddf4ff; stroke: #54aeff; stroke-width: 1.2; }
+    .text { fill: #1f2328; font: 15px ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+    .core { fill: #8250df; }
+    .coretext { fill: #ffffff; font: 700 22px ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+    .coresub { fill: #eee6ff; font: 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .ok { fill: #1a7f37; font: 600 14px ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+    .flow { stroke: #8250df; stroke-width: 2.5; fill: none; stroke-dasharray: 8 7; animation: flow 1.2s linear infinite; }
+    .tag { fill: #1f2328; font: 600 20px ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+    .r1 { animation: show 6s ease-out infinite; animation-delay: 0.3s; }
+    .r2 { animation: show 6s ease-out infinite; animation-delay: 0.6s; }
+    @keyframes flow { to { stroke-dashoffset: -30; } }
+    @keyframes show { 0%, 35% { opacity: 0.25; } 50%, 100% { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { .flow, .r1, .r2 { animation: none; } }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="960" height="380" rx="18"/>
+
+  <!-- orch tab: proposal and the owner's go -->
+  <rect class="card" x="32" y="56" width="300" height="236" rx="12"/>
+  <text class="head" x="52" y="86">orch tab</text>
+  <text class="muted" x="52" y="106">proposes before it launches</text>
+  <text class="monomuted" y="138"><tspan x="52">NAME</tspan><tspan x="142">KIND</tspan><tspan x="212">EFFORT</tspan></text>
+  <text class="mono" y="158"><tspan x="52">fix-retry</tspan><tspan x="142">claude</tspan><tspan x="212">high</tspan></text>
+  <text class="mono" y="178"><tspan x="52">readme</tspan><tspan x="142">codex</tspan><tspan x="212">medium</tspan></text>
+  <rect class="bubble" x="52" y="198" width="228" height="38" rx="10"/>
+  <text class="text" x="68" y="222">you: go</text>
+  <text class="muted" x="52" y="272">nothing starts before your go</text>
+
+  <!-- core -->
+  <path class="flow" d="M332 174 C 372 174, 372 190, 408 190"/>
+  <rect class="core" x="408" y="140" width="154" height="100" rx="50"/>
+  <text class="coretext" x="485" y="186" text-anchor="middle">herdr-orch</text>
+  <text class="coresub" x="485" y="208" text-anchor="middle">propose · verify</text>
+
+  <!-- workers, each in its own tab and worktree -->
+  <path class="flow" d="M562 190 C 600 190, 600 116, 640 116"/>
+  <path class="flow" d="M562 190 C 600 190, 600 254, 640 254"/>
+
+  <g class="r1">
+    <rect class="card" x="640" y="56" width="290" height="120" rx="12"/>
+    <text class="head" x="660" y="86">fix-retry</text>
+    <text class="muted" x="660" y="106">own tab, own worktree</text>
+    <text class="mono" x="660" y="134">completion_seq 291 → 292</text>
+    <text class="ok" x="660" y="160">✓ turn finished, diff checked</text>
+  </g>
+  <g class="r2">
+    <rect class="card" x="640" y="194" width="290" height="120" rx="12"/>
+    <text class="head" x="660" y="224">readme</text>
+    <text class="muted" x="660" y="244">own tab, own worktree</text>
+    <text class="mono" x="660" y="272">completion_seq 303 → 304</text>
+    <text class="ok" x="660" y="298">✓ turn finished, diff checked</text>
+  </g>
+
+  <text class="tag" x="480" y="350" text-anchor="middle">You approve the plan. Workers do the work. The orch checks it.</text>
+</svg>

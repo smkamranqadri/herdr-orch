@@ -1,0 +1,6 @@
+interface:
+  display_name: "herdr-orch"
+  short_description: "Coordinate Claude and Codex worker TUIs in herdr"
+  default_prompt: "Use $herdr-orch to coordinate worker TUIs with their configured models for this task."
+policy:
+  allow_implicit_invocation: false

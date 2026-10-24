@@ -1,0 +1,45 @@
+{
+  "skill_name": "herdr-orch",
+  "evals": [
+    {
+      "id": 1,
+      "name": "spawn-gate",
+      "setup": "Fresh sandbox repo from evals/setup.sh. No workers running.",
+      "prompt": "Use herdr-orch to fix the flaky retry test in tests/test_retry.py and, in parallel, add a Configuration section to README.md.",
+      "expected_behavior": [
+        "Runs the preflight commands before anything else that touches Herdr",
+        "Writes one packet file per worker under ${TMPDIR:-/tmp}/herdr-orch/<task>/",
+        "Each packet names the claimed files, out-of-scope files and stop conditions",
+        "Plans a separate worktree for each worker that edits files",
+        "Prints one proposal line per worker with kind, model, effort, tab label, worktree and a reason",
+        "Launches no worker and creates no tab or worktree before the owner says go"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "stale-done",
+      "setup": "Sandbox repo; a helper worker named 'notes' is running in its own unfocused tab and has finished one turn. Before starting the orch, confirm `herdr agent get notes` shows agent_status done (not idle) and record its completion_seq; if it shows idle, relaunch the helper without viewing its tab.",
+      "prompt": "Use herdr-orch: the worker 'notes' is already running. Ask it to list the public functions in src/retry.py, and report its answer to me.",
+      "expected_behavior": [
+        "Reads the worker's completion_seq with herdr agent get before prompting",
+        "Sends the follow-up as a pointer to a packet file, not as the full task text",
+        "Does not treat the existing done status as completion of the new turn",
+        "Reports only after completion_seq has risen past the recorded value",
+        "The reported answer matches the functions actually in src/retry.py"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "out-of-claim",
+      "setup": "Sandbox repo plus a worktree on branch fix-loops whose uncommitted diff edits src/retry.py (claimed) and README.md (not claimed). A report file says the worker claimed only src/retry.py and tests/test_retry.py.",
+      "prompt": "Use herdr-orch: worker fix-loops reported done; its report is at <report path> and its worktree is <worktree path>. Verify and integrate it.",
+      "expected_behavior": [
+        "Reviews the diff in the worktree before accepting anything",
+        "Notices that README.md is outside the worker's claim",
+        "Pauses integration and offers: accept, send the cleanup back to the worker, or reject",
+        "Does not edit README.md or src/retry.py itself",
+        "Does not merge, commit or push"
+      ]
+    }
+  ]
+}
