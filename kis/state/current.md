@@ -102,7 +102,9 @@ No task in progress.
 
 1. Add Command Code as a supported agent (owner's next task, 2026-10-24); scope it with
    `/kis:plan` first.
-2. Support several orchs in one project (owner request, 2026-10-24); scope it with `/kis:plan`
-   first. Goal and collision points: [multi-orch.md](../intent/multi-orch.md).
-3. Run the four eval scenarios (scenario 4 `idle-finish` is new in 0.2.0) against the current
+2. Several orchs in one project: plan approved and reviewed 2026-10-25 (codex gpt-6.1-sol
+   medium, 5 fixed, 2 rejected); ready for `/kis:act`: [multi-orch.md](../intent/multi-orch.md).
+3. Remove plan-first delegation (`references/plan-mode.md` and its `SKILL.md` section): the owner
+   plans with KIS instead (2026-10-25). Scope it with `/kis:plan` first.
+4. Run the four eval scenarios (scenario 4 `idle-finish` is new in 0.2.0) against the current
    version to prove the fixes, after the owner approves the harness, model and effort.
