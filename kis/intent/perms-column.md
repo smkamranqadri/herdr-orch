@@ -55,6 +55,7 @@ Three launch gates also showed up that the skill does not cover:
     other folder, goes to the owner.
   - If the agent name did not stick (a startup timeout), address the worker by its pane id;
     every `agent` verb and `wait-turn.sh` accept it.
+  Status: trust key corrected 2026-10-25: Claude's default is "No, exit", so the rule sends down, checks, then enter (live proof in State).
 - [x] 3. `evals/evals.json` eval 1 (`spawn-gate`): the proposal-line behaviour lists PERMS.
   Status: reverted 2026-10-25 by the owner (a12f7bf): the classifier ignores the column.
 - [x] 4. `CHANGELOG.md` 0.3.0 section; `metadata.version` 0.2.1 to 0.3.0.

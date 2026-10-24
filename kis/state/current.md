@@ -1,10 +1,11 @@
 # Current
 
-Stamp: main a12f7bf d958d0792b51
+Stamp: main 5a311ec e90f524ea25d
 
 Status: 0.3.0 (launch gates) on main, not pushed or released: merged 2026-10-24 at 370d69c;
 the PERMS column was reverted on 2026-10-25 at a12f7bf at the owner's request (the classifier
-ignores it). 0.2.1 (baseline wording fix) also unreleased.
+ignores it); trust-prompt key fixed 2026-10-25 at 5a311ec. 0.2.1 (baseline wording fix)
+also unreleased.
 0.2.0 released 2026-10-24 (tag `v0.2.0` at d604944, GitHub release "herdr-orch 0.2.0:
 event-mode worker watcher") and installed in ~/.agents/skills. 0.1.0 is tagged `v0.1.0` at
 6fcd718 (no GitHub release).
@@ -63,6 +64,22 @@ by eval. Scenario 4 `idle-finish` (0.2.0) has never been run.
   approval prompt or review (screen shows `Ran`); the worker replied `ok` (seq 402); the orch
   closed its tab. Watcher: `finished seq=403 status=done waited=35s`. No folder-trust prompt
   for the orch either. Codex orchs are not gated; the block is Claude Code auto mode only.
+- Codex orch trust-prompt run, 2026-10-25 (folders under `~/herdr-trust-test-20261025/`,
+  outside `/tmp`, which `~/.claude.json` trusts and so hides Claude's prompt): the first Codex
+  orch launch printed `Killed` right after start (cause unknown: no OOM in the journal, no Codex
+  log rows); one fresh relaunch worked. No Codex trust prompt with explicit flags. The Codex
+  orch launched `orch2-claude` with no approval prompt; `agent start` returned `agent_not_ready`
+  on Claude's prompt: "Accessing workspace: <folder> ... Quick safety check: Is this a project
+  you created or one you trust? ..." with options `❯ No, exit` (default) and `Yes, I trust this
+  folder`, "Enter to confirm · Esc to cancel". The orch followed 0.3.0 and sent `enter`, which
+  chose "No, exit": Claude quit and no reply came. Bug in the shipped rule: the default is not
+  the trust option. Watcher: `finished seq=430 status=done waited=50s`. Both tabs closed.
+- Trust-key fix, 2026-10-25, Claude Code 2.1.300, Herdr 0.9.5 (server restarted mid-test,
+  marker 10356311 to 10769305, which ended the first try after trust was saved): in a new folder
+  `worker3`, `agent start` returned `agent_not_ready`; `send-keys down` moved `❯` to "Yes, I
+  trust this folder" (seen on a second read; the first read came too soon); `enter`; the worker
+  replied `ok` (`finished seq=19 status=done waited=5s`). SKILL.md now says down, check, enter.
+  `tests/run.sh` exit 0. Tab closed.
 - 0.2.1, 2026-10-24: `tests/run.sh` exit 0 (wait-turn 30 cases); breaking the seq-rise branch
   fails the new baseline-0 case on its own; restore byte-identical.
 

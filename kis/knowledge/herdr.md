@@ -30,5 +30,7 @@ Checked 2026-10-24 on Claude Code 2.1.300 and Codex 0.162.1.
   `autoMode`), and the agent cannot add that entry itself: the classifier blocks the edit.
 - A Codex orch (`--sandbox danger-full-access -a on-request`, `approvals_reviewer = "auto_review"`)
   launches workers with no prompt or review.
-- Launched with those flags in a new empty folder, neither Claude nor Codex showed a
-  folder-trust prompt.
+- Claude shows its folder-trust prompt in a folder it has not seen unless a parent is trusted
+  (`~/.claude.json` trusts `/tmp` here, so scratchpad folders never prompt); its default option
+  is "No, exit". Codex launched with `--yolo` or `--sandbox`/`-a` flags showed no trust prompt,
+  even in an untrusted folder (checked 2026-10-25).
