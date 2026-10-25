@@ -31,14 +31,14 @@ exits on one unparseable `herdr agent get` read. Add nothing unnecessary to the 
 
 ## Tasks
 
-- [ ] 1. `SKILL.md`: the follow-up passage, the proposal rule and the Codex trust sentence;
+- [x] 1. `SKILL.md`: the follow-up passage, the proposal rule and the Codex trust sentence;
   `evals/evals.json` eval 1 proposal expectation.
-- [ ] 2. `wait-turn.sh` retry; `tests/test-wait-turn.sh` cases, each asserting the exact
+- [x] 2. `wait-turn.sh` retry; `tests/test-wait-turn.sh` cases, each asserting the exact
   `agent get` count and fake-clock sleeps: unparseable then good, no `result.agent` then good,
   bad on all 4 reads (`error`), and a Herdr error code (one read, no retry); break the retry
   and watch the cases fail.
-- [ ] 3. `CHANGELOG.md` 0.4.0 lines.
-- [ ] 4. Re-run Claude eval 4, then, after the owner's update, Codex eval 4 and Codex eval 1,
+- [x] 3. `CHANGELOG.md` 0.4.0 lines.
+- [x] 4. Re-run Claude eval 4, then, after the owner's update, Codex eval 4 and Codex eval 1,
   as [eval-run.md](eval-run.md) runs them; grade, retire, and update State's Evals table.
 
 ## Out of scope

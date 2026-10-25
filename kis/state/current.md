@@ -1,11 +1,11 @@
 # Current
 
-Stamp: main dad1ff2 aba8551a93bc
+Stamp: main 140afd7 a66f27960bc6
 
-Status: 0.4.0 on main, unreleased: plan-first delegation removed (ec2be79) and Command Code
-as a worker kind (2026-10-25), installed in ~/.agents/skills from the branch by the owner.
-0.3.0 released 2026-10-25 (tag `v0.3.0` at 6f3b551). 0.2.0 is tagged `v0.2.0` at d604944,
-0.1.0 `v0.1.0` at 6fcd718.
+Status: 0.4.0 on main, unreleased (2026-10-25): plan-first delegation removed (ec2be79),
+Command Code as a worker kind, and the eval fixes (140afd7); installed in ~/.agents/skills from
+140afd7. 0.3.0 released 2026-10-25 (tag `v0.3.0` at 6f3b551). 0.2.0 is tagged `v0.2.0` at
+d604944, 0.1.0 `v0.1.0` at 6fcd718.
 
 ## Evals
 
@@ -17,12 +17,13 @@ branch build, which lacks only the effort clause).
 
 | Scenario | Claude Code | Codex |
 | --- | --- | --- |
-| 1 spawn-gate | 6/6 | 5/6: proposal was prose in a question dialog, not printed lines |
+| 1 spawn-gate | 6/6 | 5/6: proposal in a question dialog; 6/6 on re-run |
 | 2 stale-done | 5/5 | 5/5 |
 | 3 out-of-claim | 5/5 | 5/5 |
-| 4 idle-finish | 4/6: no `wait-turn.sh`; reported on `agent prompt --wait` | 4/6: same |
+| 4 idle-finish | 4/6: no `wait-turn.sh`, waited on `agent prompt --wait`; 6/6 on re-run | 4/6: same; 6/6 on re-run |
 
-Evidence per behaviour (tool calls from each orch's session log, packet files, `git` and
+The re-runs used 140afd7 ([eval-fixes.md](../intent/eval-fixes.md)), with the installed and
+sandbox copies identical. Evidence per behaviour (tool calls from each orch's session log, packet files, `git` and
 `herdr` state) was kept in the session scratchpad. Every eval tab was retired; `herdr agent
 list` shows only the orch afterwards.
 
@@ -117,6 +118,10 @@ list` shows only the orch afterwards.
   owner chose the default; detected as `cmd` in 10 s, renamed `cc-live`; turn 1 "reply ok" ->
   `ok`, seq 45 (watcher errored on a bad read, see Next); turn 2 "reply ok2" -> `ok2`,
   `finished seq=49 status=done waited=14s`. Tab closed. SKILL.md 411 lines, `tests/run.sh` exit 0.
+- Eval fixes, 2026-10-25 (140afd7): `tests/run.sh` exit 0 (wait-turn 32 cases); 6/6 retry
+  mutations tripped their cases (no retry, one too many, no spacing, retrying Herdr error codes,
+  either bad kind not retried), restore byte-identical; no `--wait` left in SKILL.md (413
+  lines). Re-runs: Claude e4 6/6, Codex e4 6/6, Codex e1 6/6.
 - 0.2.1, 2026-10-24: `tests/run.sh` exit 0 (wait-turn 30 cases); breaking the seq-rise branch
   fails the new baseline-0 case on its own; restore byte-identical.
 
@@ -126,9 +131,6 @@ No task in progress.
 
 ## Next
 
-1. Fixes from the eval run (the `--wait` follow-up example, Codex proposal dialog, Codex
-   trust-prompt line, watcher retry on a bad read): plan approved and reviewed 2026-10-25
-   (codex gpt-6.1-sol low, 3 fixed); ready for `/kis:act`:
-   [eval-fixes.md](../intent/eval-fixes.md).
+1. Release 0.4.0 (plan-first removed, Command Code workers, eval fixes) when the owner asks.
 2. Codex sometimes prints `Killed` right after `agent start` (2026-10-24 `codex-orch2`,
    2026-10-25 eval 3); one relaunch worked both times. Cause unknown; watch for a third.
