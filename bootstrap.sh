@@ -124,7 +124,7 @@ compare_skill_links() {
 automode_edit() {
   ruby -rjson -e '
     mode, path = ARGV
-    rule = "herdr-orch worker launches: `herdr agent start <name> --kind claude|codex --pane <pane> -- ...` with `--dangerously-skip-permissions` (Claude) or `--yolo` (Codex) is allowed after the user said go to that worker'"'"'s proposal. The user runs the herdr-orch skill on purpose: it proposes each worker and waits for the user'"'"'s go, and every worker runs in a visible Herdr tab the user and the orch watch."
+    rule = "herdr-orch worker launches: `herdr agent start <name> --kind claude|codex --pane <pane> -- ...` with `--dangerously-skip-permissions` (Claude) or `--yolo` (Codex), and `herdr pane run <pane> cmd -t --yolo ...` (Command Code), are allowed after the user said go to that worker'"'"'s proposal. The user runs the herdr-orch skill on purpose: it proposes each worker and waits for the user'"'"'s go, and every worker runs in a visible Herdr tab the user and the orch watch."
     ours = ->(e) { e.is_a?(String) && (e.start_with?("Herdr worker launches:") || e.start_with?("herdr-orch worker launches:")) }
     begin
       data = File.exist?(path) ? JSON.parse(File.read(path)) : {}

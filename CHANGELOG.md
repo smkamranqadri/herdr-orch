@@ -2,6 +2,9 @@
 
 ## 0.4.0
 
+- Command Code (`cmd`) is a third worker kind: started bare with `herdr pane run`, named with
+  `herdr agent rename`, and sent every turn with `herdr pane send-text`. The installer's
+  auto-mode rule also allows that launch; re-run `bootstrap.sh update --claude-automode yes`.
 - Removed: plan-first delegation (`references/plan-mode.md` and its `SKILL.md` section). Plan
   before delegating; workers run direct.
 

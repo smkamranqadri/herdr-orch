@@ -58,7 +58,7 @@ The skill only runs when you call it by name. Codex needs `--sandbox danger-full
 because its default sandbox blocks the Herdr socket. Claude Code's auto mode blocks worker
 launches, so the installer asks whether to add an auto-mode rule that allows them.
 
-Requirements: Herdr (tested with 0.9.5), and Claude Code or Codex.
+Requirements: Herdr (tested with 0.9.5), and Claude Code or Codex (Command Code for workers).
 
 ## What you get
 

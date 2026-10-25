@@ -1,6 +1,6 @@
 ---
 name: herdr-orch
-description: "Coordinates Claude Code and Codex worker agents from one orch session over the Herdr CLI, one named tab per worker: launch, prompt, track turns, verify and retire. Use when the user asks to delegate work to Herdr workers or run several agents through Herdr."
+description: "Coordinates Claude Code, Codex and Command Code worker agents from one orch session over the Herdr CLI, one named tab per worker: launch, prompt, track turns, verify and retire. Use when the user asks to delegate work to Herdr workers or run several agents through Herdr."
 disable-model-invocation: true
 metadata:
   author: smkamranqadri
@@ -39,8 +39,8 @@ Two names per worker, both required at launch:
 
 ## Workers are TUIs — no headless runners
 
-A worker is an interactive TUI — `claude` or `codex` — started with `herdr agent
-start`, which validates the agent's identity and returns only once Herdr sees it
+A worker is an interactive TUI — `claude`, `codex` or `cmd` (Command Code). The
+first two start with `herdr agent start`, which validates the agent's identity and returns only once Herdr sees it
 ready for input. Herdr's agent-state integrations hook those TUIs, so `agent
 wait`, `agent list`, and blocked/done detection exist only while a real TUI is
 on screen.
@@ -89,7 +89,7 @@ Inspect the daemon, integrations, and caller context:
 
 ```bash
 herdr status                 # server running + socket path
-herdr integration status     # selected worker runtime must show `current`
+herdr integration status     # selected runtime must show `current` (cmd has none)
 herdr pane current --current # caller pane / tab / workspace ids
 herdr agent list             # agents already running
 ```
@@ -223,12 +223,37 @@ folder, goes to the owner.
 If the agent name did not stick (a startup timeout), address the worker by its
 pane id; every `agent` verb and `wait-turn.sh` accept it.
 
+### Command Code workers
+
+Herdr has no `agent start` kind for Command Code, so start it bare and name it:
+
+```bash
+herdr pane run <root_pane_id> "cmd -t --yolo -m <model> --effort <effort>"
+herdr agent get <root_pane_id>   # ready once it shows agent "cmd"
+herdr agent rename <root_pane_id> perms-docs
+```
+
+`-t` trusts the folder, so there is no trust prompt. Arm `wait-turn.sh`
+(baseline `0`), then send every turn, the first included, as literal text and
+Enter; `agent prompt` does not reach it:
+
+```bash
+herdr pane send-text <pane_id> "The user asked for this: read <packet path> in full and follow it."
+herdr pane send-keys <pane_id> enter
+```
+
+With `--yolo` it can reach outside its folder; pick claude or codex for slices
+that need tight confinement. It writes `.commandcode/` into its folder: that is
+its own state, never committed and not counted against the claim.
+
 ## Sending prompts to running TUIs
 
-Prefer passing the packet pointer (see Delegation packets) as launch argv — the
-session starts working immediately and skips the TUI-ready race.
+For claude and codex, prefer passing the packet pointer (see Delegation packets)
+as launch argv — the session starts working immediately and skips the TUI-ready
+race. Command Code takes every turn by `pane send-text` (see Command Code
+workers).
 
-For any follow-up, use `agent prompt` — it submits text plus Enter atomically,
+For a claude or codex follow-up, use `agent prompt` — it submits text plus Enter atomically,
 honoring the pane's live bracketed-paste mode, and `--wait` blocks until the
 worker settles:
 

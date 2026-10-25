@@ -68,6 +68,7 @@ cmp -s "$tmp/st.orig" "$(ls "$st".bak-herdr-orch-* | head -1)" || fail "automode
 ruby -rjson -e '
   d = JSON.parse(File.read(ARGV[0])); a = d["autoMode"]["allow"]
   abort("allow must be $defaults then the rule, got #{a.inspect}") unless a.size == 2 && a[0] == "$defaults" && a[1].start_with?("herdr-orch worker launches:")
+  abort("the rule must allow the Command Code launch") unless a[1].include?("herdr pane run <pane> cmd -t --yolo")
   abort("other keys changed") unless d.reject { |k, _| k == "autoMode" } == {"theme" => "auto", "permissions" => {"allow" => ["Bash(ls)"]}}
 ' "$st" || fail "automode yes wrote the wrong settings"
 [[ "$(stat -c %a "$st")" == 600 ]] || fail "automode yes changed the file mode"
