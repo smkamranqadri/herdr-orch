@@ -1,6 +1,6 @@
 # Current
 
-Stamp: main ec2be79 513659918ed5
+Stamp: command-code 3c9b91e 4863a32817ab
 
 Status: 0.4.0 on main, unreleased: plan-first delegation removed 2026-10-25 at
 ec2be79. 0.3.0 released 2026-10-25 (tag `v0.3.0` at 6f3b551) and installed in ~/.agents/skills
@@ -96,12 +96,19 @@ by eval. Scenario 4 `idle-finish` (0.2.0) has never been run.
 - Plan-mode removal, 2026-10-25: `tests/run.sh` exit 0; `grep -riE 'plan-first|plan
   mode|plan-mode|permission-mode plan'` over skills/, README, AGENTS, CONTRIBUTING and tests/
   finds nothing; `skills/herdr-orch/references/` is gone; SKILL.md 384 lines.
+- Command Code tasks 1-3, 2026-10-25 (branch `command-code`, 3c9b91e): `tests/run.sh` exit 0;
+  dropping `--yolo ...` from the rule's cmd launch tripped "automode yes wrote the wrong
+  settings", restore byte-identical; SKILL.md 409 lines. Live run (task 4) not run.
 - 0.2.1, 2026-10-24: `tests/run.sh` exit 0 (wait-turn 30 cases); breaking the seq-rise branch
   fails the new baseline-0 case on its own; restore byte-identical.
 
 ## Now
 
-No task in progress.
+Command Code as a worker kind ([command-code.md](../intent/command-code.md)), Standard mode,
+branch `command-code` (3c9b91e, not merged until the live run passes). Tasks 1-3 done.
+Blocker: task 4 needs the owner to run, in this checkout on branch `command-code`,
+`./bootstrap.sh update --source . --claude-automode yes` (installs the branch skill into
+~/.agents/skills and the new rule text); then the orch runs the live test and task 5.
 
 ## Next
 

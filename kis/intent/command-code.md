@@ -33,11 +33,11 @@ skill or KIS.
 
 ## Tasks
 
-- [ ] 1. `SKILL.md`: the kind, launch, readiness, rename and send text; the claude/codex scoping
+- [x] 1. `SKILL.md`: the kind, launch, readiness, rename and send text; the claude/codex scoping
   of the existing launch and prompt rules; the preflight exemption; the two lines above.
-- [ ] 2. `bootstrap.sh` rule text; `tests/test-install.sh` asserts the rule names the `cmd`
+- [x] 2. `bootstrap.sh` rule text; `tests/test-install.sh` asserts the rule names the `cmd`
   launch; break it and watch that case fail.
-- [ ] 3. `README.md` requirements line adds "(Command Code for workers)"; `CHANGELOG.md` 0.4.0;
+- [x] 3. `README.md` requirements line adds "(Command Code for workers)"; `CHANGELOG.md` 0.4.0;
   `metadata.version` 0.4.0.
 - [ ] 4. Live run from this Claude Code orch session in auto mode, after the owner runs
   `./bootstrap.sh update --source . --claude-automode yes`: one throwaway worker,
