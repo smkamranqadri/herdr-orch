@@ -1,6 +1,6 @@
 # Current
 
-Stamp: command-code 3c9b91e 4863a32817ab
+Stamp: main d0708a0 aba8551a93bc
 
 Status: 0.4.0 on main, unreleased: plan-first delegation removed (ec2be79) and Command Code
 as a worker kind (2026-10-25), installed in ~/.agents/skills from the branch by the owner.
