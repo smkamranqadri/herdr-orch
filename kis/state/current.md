@@ -1,6 +1,6 @@
 # Current
 
-Stamp: main d0708a0 aba8551a93bc
+Stamp: main dad1ff2 aba8551a93bc
 
 Status: 0.4.0 on main, unreleased: plan-first delegation removed (ec2be79) and Command Code
 as a worker kind (2026-10-25), installed in ~/.agents/skills from the branch by the owner.
@@ -9,11 +9,22 @@ as a worker kind (2026-10-25), installed in ~/.agents/skills from the branch by 
 
 ## Evals
 
-`evals/` (spawn-gate, stale-done, out-of-claim) ran once per scenario on 2026-10-24: with and
-without the skill on Claude Code 2.1.300 (Sonnet 5.5), and with it only on Codex 0.162.1 (no
-Codex baseline; Codex loaded the owner's global memory). Three gaps found were
-fixed in 0.1.0. The scenarios have not been re-run since those fixes, so the fixes are unproven
-by eval. Scenario 4 `idle-finish` (0.2.0) has never been run.
+Run 2026-10-25 against herdr-orch 0.4.0 on main (Herdr 0.9.5), with the skill only, one run
+per cell ([eval-run.md](../intent/eval-run.md)). The 2026-10-24 no-skill baselines stand.
+Claude Code 2.1.300 orchs (Sonnet 5.5 medium) read the sandbox copy of the skill; Codex 0.162.1
+orchs (gpt-6.1-sol medium) read the installed `~/.agents/skills/herdr-orch` (the command-code
+branch build, which lacks only the effort clause).
+
+| Scenario | Claude Code | Codex |
+| --- | --- | --- |
+| 1 spawn-gate | 6/6 | 5/6: proposal was prose in a question dialog, not printed lines |
+| 2 stale-done | 5/5 | 5/5 |
+| 3 out-of-claim | 5/5 | 5/5 |
+| 4 idle-finish | 4/6: no `wait-turn.sh`; reported on `agent prompt --wait` | 4/6: same |
+
+Evidence per behaviour (tool calls from each orch's session log, packet files, `git` and
+`herdr` state) was kept in the session scratchpad. Every eval tab was retired; `herdr agent
+list` shows only the orch afterwards.
 
 ## Proof
 
@@ -115,10 +126,18 @@ No task in progress.
 
 ## Next
 
-1. Watcher dies on one unparseable `herdr agent get` read (2026-10-25: armed right after
+1. Orchs wait on `agent prompt --wait` instead of `wait-turn.sh` (eval 4 failed 2/6 on both
+   hosts, 2026-10-25; the eval 2 orchs did the same). `SKILL.md` "Sending prompts" shows the
+   follow-up as `agent prompt ... --wait --timeout 300000`, against "Track workers". Scope it
+   with `/kis:plan` first.
+2. A Codex orch proposed workers in a `request_user_input` dialog, not as printed proposal
+   lines (eval 1, 2026-10-25). Scope it with `/kis:plan` first.
+3. `SKILL.md` says Codex showed no trust prompt; in every eval sandbox (a git repo with
+   `.agents/` and `.claude/` folders) Codex asked "Folder access <folder> Trust this folder? ...
+   › 1. Trust and continue / 2. Quit", answered with Enter (2026-10-25). Correct the line.
+4. Watcher dies on one unparseable `herdr agent get` read (2026-10-25: armed right after
    `agent rename` on a Command Code pane, it printed `error unparseable output from herdr agent
    get` and exited 1; the same read parsed a moment later). It should retry a bad read before
    giving up. Scope it with `/kis:plan` first.
-2. Run the four eval scenarios: plan approved and reviewed 2026-10-25 (codex gpt-6.1-sol low,
-   2 fixed):
-   [eval-run.md](../intent/eval-run.md). Ready for `/kis:act`.
+5. Codex sometimes prints `Killed` right after `agent start` (2026-10-24 `codex-orch2`,
+   2026-10-25 eval 3); one relaunch worked both times. Cause unknown; watch for a third.

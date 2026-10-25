@@ -27,9 +27,9 @@ unnecessary to the skill or KIS.
 
 ## Tasks
 
-- [ ] 1. Claude Code runs, evals 1-4: set up, launch, watch, grade, retire.
-- [ ] 2. Codex runs, evals 1-4: the same.
-- [ ] 3. Rewrite State's Evals section with dates, versions and the grade table; add a Next item
+- [x] 1. Claude Code runs, evals 1-4: set up, launch, watch, grade, retire.
+- [x] 2. Codex runs, evals 1-4: the same.
+- [x] 3. Rewrite State's Evals section with dates, versions and the grade table; add a Next item
   per failure.
 
 ## Out of scope
