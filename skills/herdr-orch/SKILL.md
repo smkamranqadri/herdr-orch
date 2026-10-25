@@ -233,7 +233,9 @@ herdr agent get <root_pane_id>   # ready once it shows agent "cmd"
 herdr agent rename <root_pane_id> perms-docs
 ```
 
-`-t` trusts the folder, so there is no trust prompt. Arm `wait-turn.sh`
+`--effort` values depend on the model (`deepseek/deepseek-v4-flash` takes only
+off, high or max, and a wrong one exits at once); leave it out for the model's
+default. `-t` trusts the folder, so there is no trust prompt. Arm `wait-turn.sh`
 (baseline `0`), then send every turn, the first included, as literal text and
 Enter; `agent prompt` does not reach it:
 
