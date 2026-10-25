@@ -34,3 +34,7 @@ Checked 2026-10-24 on Claude Code 2.1.300 and Codex 0.162.1.
   (`~/.claude.json` trusts `/tmp` here, so scratchpad folders never prompt); its default option
   is "No, exit". Codex launched with `--yolo` or `--sandbox`/`-a` flags showed no trust prompt,
   even in an untrusted folder (checked 2026-10-25).
+- Command Code (1.82.5, checked 2026-10-25): no `agent start` kind; started with `herdr pane run`,
+  Herdr detects it as agent `cmd` and `agent rename` names it; turns sent with `pane send-text`
+  and Enter land; `completion_seq` rises per turn (45, then 49). `--effort` values depend on the
+  model. `cmd -t` shows no trust prompt and writes `.commandcode/` into its folder.

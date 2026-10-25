@@ -2,9 +2,10 @@
 
 Stamp: command-code 3c9b91e 4863a32817ab
 
-Status: 0.4.0 on main, unreleased: plan-first delegation removed 2026-10-25 at
-ec2be79. 0.3.0 released 2026-10-25 (tag `v0.3.0` at 6f3b551) and installed in ~/.agents/skills
-from the tag. 0.2.0 is tagged `v0.2.0` at d604944, 0.1.0 `v0.1.0` at 6fcd718.
+Status: 0.4.0 on main, unreleased: plan-first delegation removed (ec2be79) and Command Code
+as a worker kind (2026-10-25), installed in ~/.agents/skills from the branch by the owner.
+0.3.0 released 2026-10-25 (tag `v0.3.0` at 6f3b551). 0.2.0 is tagged `v0.2.0` at d604944,
+0.1.0 `v0.1.0` at 6fcd718.
 
 ## Evals
 
@@ -98,23 +99,26 @@ by eval. Scenario 4 `idle-finish` (0.2.0) has never been run.
   finds nothing; `skills/herdr-orch/references/` is gone; SKILL.md 384 lines.
 - Command Code tasks 1-3, 2026-10-25 (branch `command-code`, 3c9b91e): `tests/run.sh` exit 0;
   dropping `--yolo ...` from the rule's cmd launch tripped "automode yes wrote the wrong
-  settings", restore byte-identical; SKILL.md 409 lines. Live run (task 4) not run.
+  settings", restore byte-identical; SKILL.md 409 lines. Live run, 2026-10-25, after the owner's
+  `bootstrap.sh update --source . --claude-automode yes` (`claude auto-mode config`: one herdr
+  rule, names the cmd launch): `herdr pane run ... cmd -t --yolo -m deepseek/deepseek-v4-flash`
+  passed auto mode; `--effort low` exited ("Unknown effort... Supported: off, high, max"), the
+  owner chose the default; detected as `cmd` in 10 s, renamed `cc-live`; turn 1 "reply ok" ->
+  `ok`, seq 45 (watcher errored on a bad read, see Next); turn 2 "reply ok2" -> `ok2`,
+  `finished seq=49 status=done waited=14s`. Tab closed. SKILL.md 411 lines, `tests/run.sh` exit 0.
 - 0.2.1, 2026-10-24: `tests/run.sh` exit 0 (wait-turn 30 cases); breaking the seq-rise branch
   fails the new baseline-0 case on its own; restore byte-identical.
 
 ## Now
 
-Command Code as a worker kind ([command-code.md](../intent/command-code.md)), Standard mode,
-branch `command-code` (3c9b91e, not merged until the live run passes). Tasks 1-3 done.
-Blocker: task 4 needs the owner to run, in this checkout on branch `command-code`,
-`./bootstrap.sh update --source . --claude-automode yes` (installs the branch skill into
-~/.agents/skills and the new rule text); then the orch runs the live test and task 5.
+No task in progress.
 
 ## Next
 
-1. Command Code as a worker kind: plan approved and reviewed 2026-10-25 (codex gpt-6.1-sol
-   medium, 4 fixed); ready for `/kis:act`:
-   [command-code.md](../intent/command-code.md).
+1. Watcher dies on one unparseable `herdr agent get` read (2026-10-25: armed right after
+   `agent rename` on a Command Code pane, it printed `error unparseable output from herdr agent
+   get` and exited 1; the same read parsed a moment later). It should retry a bad read before
+   giving up. Scope it with `/kis:plan` first.
 2. Run the four eval scenarios: plan approved and reviewed 2026-10-25 (codex gpt-6.1-sol low,
    2 fixed):
-   [eval-run.md](../intent/eval-run.md). Runs after item 1 is acted on.
+   [eval-run.md](../intent/eval-run.md). Ready for `/kis:act`.

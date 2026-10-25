@@ -39,14 +39,15 @@ skill or KIS.
   launch; break it and watch that case fail.
 - [x] 3. `README.md` requirements line adds "(Command Code for workers)"; `CHANGELOG.md` 0.4.0;
   `metadata.version` 0.4.0.
-- [ ] 4. Live run from this Claude Code orch session in auto mode, after the owner runs
+- [x] 4. Live run from this Claude Code orch session in auto mode, after the owner runs
   `./bootstrap.sh update --source . --claude-automode yes`: one throwaway worker,
   `deepseek/deepseek-v4-flash` low, a new empty folder under the scratchpad. Launch bare, rename,
   arm the watcher, then send "reply ok"; record whether auto mode passed the launch, the
   watcher line and whether `completion_seq` rose. Arm again, send "reply ok2", record its
   watcher line and reply. A backstop with no `working` seen is recorded as a missed transition,
   not as a pass. Retire it.
-- [ ] 5. Make `SKILL.md` match task 4: if tracking or the follow-up failed, say what fails
+  Status: done 2026-10-25 with default effort (owner): "low" is not valid for this model.
+- [x] 5. Make `SKILL.md` match task 4: if tracking or the follow-up failed, say what fails
   instead of claiming it.
 
 ## Out of scope
