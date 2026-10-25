@@ -17,15 +17,15 @@ delegating, so it is not needed. Add nothing unnecessary to the skill or KIS.
 
 ## Tasks
 
-- [ ] 1. Delete `skills/herdr-orch/references/plan-mode.md` and the `references/` folder.
-- [ ] 2. `SKILL.md`: remove the "Plan-first delegation" section, the packet's execution-mode
+- [x] 1. Delete `skills/herdr-orch/references/plan-mode.md` and the `references/` folder.
+- [x] 2. `SKILL.md`: remove the "Plan-first delegation" section, the packet's execution-mode
   field, the plan-mode launch notes (including the "Codex plan-first launches bare" exception
   in "Sending prompts"), the planning statuses in the registry list and the
   plan-mode stop condition; the `--match` example no longer names a plan-mode menu.
-- [ ] 3. `README.md` plan-first bullet; the `AGENTS.md` layout line; in `CONTRIBUTING.md` the
+- [x] 3. `README.md` plan-first bullet; the `AGENTS.md` layout line; in `CONTRIBUTING.md` the
   layout line and the passages that send plan-mode detail to `references/`;
   `tests/test-install.sh` drops its `references/plan-mode.md` check.
-- [ ] 4. `CHANGELOG.md` 0.4.0 "Removed" line, and `metadata.version` 0.4.0 if not bumped yet.
+- [x] 4. `CHANGELOG.md` 0.4.0 "Removed" line, and `metadata.version` 0.4.0 if not bumped yet.
 
 ## Out of scope
 

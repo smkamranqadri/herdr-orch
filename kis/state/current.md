@@ -1,10 +1,10 @@
 # Current
 
-Stamp: main 6f3b551 c0a2919f6f92
+Stamp: main ec2be79 513659918ed5
 
-Status: 0.3.0 released 2026-10-25 (tag `v0.3.0` at 6f3b551, GitHub release "herdr-orch 0.3.0:
-launch gates, auto-mode rule, several orchs"; includes the unreleased 0.2.1) and installed in
-~/.agents/skills from the tag. 0.2.0 is tagged `v0.2.0` at d604944, 0.1.0 `v0.1.0` at 6fcd718.
+Status: 0.4.0 on main, unreleased: plan-first delegation removed 2026-10-25 at
+ec2be79. 0.3.0 released 2026-10-25 (tag `v0.3.0` at 6f3b551) and installed in ~/.agents/skills
+from the tag. 0.2.0 is tagged `v0.2.0` at d604944, 0.1.0 `v0.1.0` at 6fcd718.
 
 ## Evals
 
@@ -93,6 +93,9 @@ by eval. Scenario 4 `idle-finish` (0.2.0) has never been run.
 - Release 0.3.0, 2026-10-25: `tests/run.sh` exit 0 on 6f3b551; CI run 40136527746 passed on
   6f3b551; `bootstrap.sh update --ref v0.3.0` installed it (auto-mode rule already present) and
   `bootstrap.sh check --ref v0.3.0` reports current.
+- Plan-mode removal, 2026-10-25: `tests/run.sh` exit 0; `grep -riE 'plan-first|plan
+  mode|plan-mode|permission-mode plan'` over skills/, README, AGENTS, CONTRIBUTING and tests/
+  finds nothing; `skills/herdr-orch/references/` is gone; SKILL.md 384 lines.
 - 0.2.1, 2026-10-24: `tests/run.sh` exit 0 (wait-turn 30 cases); breaking the seq-rise branch
   fails the new baseline-0 case on its own; restore byte-identical.
 
@@ -105,9 +108,6 @@ No task in progress.
 1. Command Code as a worker kind: plan approved and reviewed 2026-10-25 (codex gpt-6.1-sol
    medium, 4 fixed); ready for `/kis:act`:
    [command-code.md](../intent/command-code.md).
-2. Remove plan-first delegation: plan approved and reviewed 2026-10-25 (codex gpt-6.1-sol low,
-   2 fixed); ready for `/kis:act`:
-   [remove-plan-mode.md](../intent/remove-plan-mode.md).
-3. Run the four eval scenarios: plan approved and reviewed 2026-10-25 (codex gpt-6.1-sol low,
+2. Run the four eval scenarios: plan approved and reviewed 2026-10-25 (codex gpt-6.1-sol low,
    2 fixed):
-   [eval-run.md](../intent/eval-run.md). Runs after items 1 and 2 are acted on.
+   [eval-run.md](../intent/eval-run.md). Runs after item 1 is acted on.
