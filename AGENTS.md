@@ -9,7 +9,6 @@ This repository is the **source** of the **herdr-orch** skill. Nothing here is a
 ```text
 skills/herdr-orch/     the skill, and what ships
   SKILL.md             the orch workflow; loaded when the skill is invoked
-  references/          plan-mode.md, read only for plan-first workers
   agents/openai.yaml   Codex display name and invocation policy
 scripts/               install-skill.sh, run from a source clone only
 evals/                 three scenarios (evals.json) and their sandbox builder (setup.sh)

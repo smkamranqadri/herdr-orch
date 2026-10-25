@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0
+
+- Removed: plan-first delegation (`references/plan-mode.md` and its `SKILL.md` section). Plan
+  before delegating; workers run direct.
+
 ## 0.3.0
 
 - Several orchs can share a project: each picks an unused orch id that prefixes its agent

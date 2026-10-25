@@ -74,8 +74,6 @@ Requirements: Herdr (tested with 0.9.5), and Claude Code or Codex.
 - The orch re-runs what it can, reads the diff, and treats a worker's report as a claim. If a
   worker edited files outside its brief, you decide whether to accept the edit, send it back or
   reject it. The orch does not write product code itself.
-- When you ask for plan-first, workers plan in Claude's or Codex's plan mode and wait for the
-  orch to accept the plan before they start.
 
 ## Safety
 

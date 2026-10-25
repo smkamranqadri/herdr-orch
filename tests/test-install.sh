@@ -16,7 +16,6 @@ bs() { setsid -w "$repo_root/bootstrap.sh" "$@" </dev/null; }
 bs install --source "$repo_root" --home "$home" >"$log" 2>&1 || fail "install exited non-zero"
 grep -q "^Installed herdr-orch 0" "$log" || fail "install did not report herdr-orch"
 test -f "$home/.agents/skills/herdr-orch/SKILL.md" || fail "SKILL.md missing"
-test -f "$home/.agents/skills/herdr-orch/references/plan-mode.md" || fail "references missing"
 test -x "$home/.agents/skills/herdr-orch/scripts/wait-turn.sh" || fail "watcher script missing or not executable"
 [[ "$(readlink "$home/.claude/skills/herdr-orch")" == "../../.agents/skills/herdr-orch" ]] || fail "Claude link missing or wrong"
 test -f "$home/.claude/skills/herdr-orch/SKILL.md" || fail "Claude link does not resolve"

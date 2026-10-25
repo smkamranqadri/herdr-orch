@@ -1,6 +1,6 @@
 # Contributing to herdr-orch
 
-Thanks for helping. herdr-orch is one skill file and a small reference, so the bar is: every
+Thanks for helping. herdr-orch is one skill file and a watcher script, so the bar is: every
 change keeps it short, matches what Herdr actually does, and is checked.
 
 ## Getting set up
@@ -21,8 +21,7 @@ skill names against your Herdr.
 - **Guards are mutation-checked.** If you add a check, break it on purpose, confirm its test
   fails, and restore it. Mention it in the PR.
 - **Only real Herdr commands.** Check each new command or flag with `herdr <command> --help`.
-- **Keep `SKILL.md` short.** Agents load all of it on every use; plan-mode detail goes in
-  `references/`.
+- **Keep `SKILL.md` short.** Agents load all of it on every use.
 - **Bump `metadata.version`** in `skills/herdr-orch/SKILL.md` and add a line to `CHANGELOG.md`
   for any change that ships.
 
@@ -31,7 +30,6 @@ skill names against your Herdr.
 ```text
 skills/herdr-orch/     what installs into ~/.agents/skills/herdr-orch
   SKILL.md             what the orch reads when the skill is invoked
-  references/          plan-mode.md
   agents/openai.yaml   Codex metadata
 evals/                 scenarios and the sandbox builder
 tests/                 one suite per area, run by tests/run.sh

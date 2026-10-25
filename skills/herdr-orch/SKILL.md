@@ -4,7 +4,7 @@ description: "Coordinates Claude Code and Codex worker agents from one orch sess
 disable-model-invocation: true
 metadata:
   author: smkamranqadri
-  version: "0.3.0"
+  version: "0.4.0"
 ---
 
 # herdr-orch
@@ -118,7 +118,6 @@ packet is a standalone contract. Include:
 
 - repo path and exact objective
 - worker role and model
-- execution mode: direct (default) or plan-first (user-activated)
 - files, packages, or surfaces in scope
 - files and behaviors explicitly out of scope
 - claimed files or work slice, to avoid conflicts
@@ -189,8 +188,7 @@ screen reads need all three.
 
 Claude always launches with `--dangerously-skip-permissions` and Codex with
 `--yolo` — workers run unattended and must not stall on permission prompts.
-Plan-first runs add Claude's `--permission-mode plan`; the flags compose (see
-Plan-first delegation). Never change a worker's permission flags (for example to
+Never change a worker's permission flags (for example to
 `--permission-mode acceptEdits`) unless the owner names that choice.
 
 If the host blocks a launch (for example Claude Code's auto-mode check), do not
@@ -228,8 +226,7 @@ pane id; every `agent` verb and `wait-turn.sh` accept it.
 ## Sending prompts to running TUIs
 
 Prefer passing the packet pointer (see Delegation packets) as launch argv — the
-session starts working immediately and skips the TUI-ready race. Exception:
-Codex plan-first launches bare (see Plan-first delegation).
+session starts working immediately and skips the TUI-ready race.
 
 For any follow-up, use `agent prompt` — it submits text plus Enter atomically,
 honoring the pane's live bracketed-paste mode, and `--wait` blocks until the
@@ -245,19 +242,6 @@ A trailing `\n` in `pane send-text` does not submit — a TUI renders it as a so
 newline and the prompt sits unsubmitted. An unconfirmed send is not delivered:
 if `--wait` returns `agent_prompt_stalled`, the worker never changed state —
 read the screen and resend.
-
-## Plan-first delegation (opt-in)
-
-Plan-first runs only when the user activates it — an explicit ask ("plan first",
-"plan mode") or a `--plan-mode` flag on the invocation. The default delegation
-is direct: launch and run hands-off. Investigation complexity alone does not add
-a planning approval step.
-
-Once activated, the worker plans, the orch reviews and accepts, then it runs
-hands-off. The launch flags, shift+tab sequences, status checks, and acceptance
-menus are exact and differ per TUI. **Read
-[references/plan-mode.md](references/plan-mode.md) in full before launching a
-plan-first worker.**
 
 ## Track workers
 
@@ -305,7 +289,7 @@ Pass each printed `srv` back as the last argument of the next run. Size the
 backstop to the slice: an hour suits most, longer for builds that run for
 hours. When a reported status looks wrong, debug detection with
 `herdr agent explain <pane_id> --json`. `herdr pane wait-output <pane_id>
---match "<text>"` waits for specific output, such as a plan-mode menu.
+--match "<text>"` waits for specific output, such as a dialog.
 
 Two traps when reading panes and stopping jobs:
 
@@ -317,10 +301,10 @@ Two traps when reading panes and stopping jobs:
 
 Maintain a compact registry in the existing task notes or handoff: orch
 identity; worker agent name, tab label, role, model; workspace/tab/pane ids;
-objective sent and start time; status (starting, planning, plan-review,
-plan-accepted, running, blocked, reported, verified, retired); claimed files or
-work slice; worker-reported commands and results; orch verification performed;
-final disposition (accepted, rejected, superseded, or blocked).
+objective sent and start time; status (starting, running, blocked, reported,
+verified, retired); claimed files or work slice; worker-reported commands and
+results; orch verification performed; final disposition (accepted, rejected,
+superseded, or blocked).
 
 Keep the tab label current as a slice changes, and announce milestones without
 stealing focus:
@@ -396,8 +380,5 @@ Stop and report instead of improvising when:
 - a worker's status stays `unknown` while output scrolls and `agent explain`
   shows no matched rule — detection is broken or the pane is running a headless
   process.
-- a plan-mode status line or acceptance menu cannot be confirmed via `agent
-  read` or `pane wait-output`, or a worker's plan stays out of scope after a
-  re-planning round.
 - workers need overlapping edits the orch cannot integrate safely.
 - a task needs focus-changing Herdr verbs the user has not approved.
