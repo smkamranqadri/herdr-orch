@@ -1,10 +1,10 @@
 # Current
 
-Stamp: main 140afd7 a66f27960bc6
+Stamp: main 6f45736 a66f27960bc6
 
-Status: 0.4.0 on main, unreleased (2026-10-25): plan-first delegation removed (ec2be79),
-Command Code as a worker kind, and the eval fixes (140afd7); installed in ~/.agents/skills from
-140afd7. 0.3.0 released 2026-10-25 (tag `v0.3.0` at 6f3b551). 0.2.0 is tagged `v0.2.0` at
+Status: 0.4.0 released 2026-10-25 (tag `v0.4.0` at 6f45736, GitHub release "herdr-orch 0.4.0:
+Command Code workers, watcher-tracked follow-ups, plan mode removed") and installed in
+~/.agents/skills (matches the tag). 0.3.0 is tagged `v0.3.0` at 6f3b551, 0.2.0 `v0.2.0` at
 d604944, 0.1.0 `v0.1.0` at 6fcd718.
 
 ## Evals
@@ -122,6 +122,8 @@ list` shows only the orch afterwards.
   mutations tripped their cases (no retry, one too many, no spacing, retrying Herdr error codes,
   either bad kind not retried), restore byte-identical; no `--wait` left in SKILL.md (413
   lines). Re-runs: Claude e4 6/6, Codex e4 6/6, Codex e1 6/6.
+- Release 0.4.0, 2026-10-25: `tests/run.sh` exit 0 on 6f45736; CI run 40177245048 passed on
+  6f45736; `bootstrap.sh check --ref v0.4.0` reports the installed copy current.
 - 0.2.1, 2026-10-24: `tests/run.sh` exit 0 (wait-turn 30 cases); breaking the seq-rise branch
   fails the new baseline-0 case on its own; restore byte-identical.
 
@@ -131,6 +133,5 @@ No task in progress.
 
 ## Next
 
-1. Release 0.4.0 (plan-first removed, Command Code workers, eval fixes) when the owner asks.
-2. Codex sometimes prints `Killed` right after `agent start` (2026-10-24 `codex-orch2`,
+1. Codex sometimes prints `Killed` right after `agent start` (2026-10-24 `codex-orch2`,
    2026-10-25 eval 3); one relaunch worked both times. Cause unknown; watch for a third.
