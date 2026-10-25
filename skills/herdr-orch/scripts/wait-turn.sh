@@ -42,8 +42,19 @@ for line in sys.stdin:
 sys.exit(1)'
 }
 
-# One agent read: "ok <seq|-> <status> <revision>", "gone", or "bad <message>".
+# One agent read: "ok <seq|-> <status> <revision>", "gone", or "bad <message>". Output that is
+# not a parseable agent is retried up to 3 times, 1 s apart; a Herdr error code is not.
 read_agent() {
+  local out try
+  for try in 1 2 3 4; do
+    out="$(read_agent_once)"
+    [[ "$out" == "bad unparseable"* || "$out" == "bad herdr agent get output"* ]] || break
+    (( try < 4 )) && sleep 1
+  done
+  printf '%s\n' "$out"
+}
+
+read_agent_once() {
   herdr agent get "$name" 2>&1 | python3 -I -c '
 import json, sys
 try:

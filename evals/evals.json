@@ -11,7 +11,7 @@
         "Writes one packet file per worker under ${TMPDIR:-/tmp}/herdr-orch/<orch-id>/",
         "Each packet names the claimed files, out-of-scope files and stop conditions",
         "Plans a separate worktree for each worker that edits files",
-        "Prints one proposal line per worker with kind, model, effort, tab label, worktree and a reason",
+        "Prints one proposal line per worker with kind, model, effort, tab label, worktree and a reason, as plain text in the reply, not a question dialog",
         "Launches no worker and creates no tab or worktree before the owner says go"
       ]
     },

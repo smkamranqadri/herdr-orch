@@ -80,7 +80,14 @@ elif args[:2] == ["agent", "wait"]:
 else:
     sys.exit("fake herdr: unexpected call: " + " ".join(args))
 EOF
-chmod +x "$tmp/bin/date" "$tmp/bin/herdr"
+cat >"$tmp/bin/sleep" <<'EOF'
+#!/bin/sh
+echo "sleep $1" >>"$FAKE/calls"
+now=$(cat "$FAKE/clock"); echo $((now + $1)) >"$FAKE/clock"
+EOF
+chmod +x "$tmp/bin/date" "$tmp/bin/herdr" "$tmp/bin/sleep"
+# calls <pattern> <count>: the last case made exactly <count> calls matching <pattern>
+calls() { [[ "$(grep -c -- "$1" "$FAKE/calls" || true)" == "$2" ]] || fail "case $n: want $2 calls matching '$1', got $(grep -c -- "$1" "$FAKE/calls" || true)"; }
 
 n=0
 # run <scenario-json> <expected-line> <expected-exit> [wait-timeouts-ms...] -- <script args...>
@@ -173,11 +180,21 @@ run '{"status":["A","A","A","B"],"get":['"$W"'],"wait":[{"err":"server_not_runni
 run '{"status":["A"],"get":['"$W"'],"wait":[{"err":"internal"}]}' \
   "error herdr agent wait failed for w1" 1 60000 -- w1 5
 # Herdr down and bad output are errors
+# a Herdr error code is reported after one read; a bad read is retried 3 times, 1 s apart
 run '{"status":["A"],"get":[{"err":"server_not_running"}]}' \
   "error herdr agent get failed: server_not_running" 1 -- w1 5
+calls '^agent get' 1; calls '^sleep' 0
 run '{"status":["A"],"get":[{"raw":"not json"}]}' "error unparseable output from herdr agent get" 1 -- w1 5
+calls '^agent get' 4; calls '^sleep 1$' 3
 run '{"status":["A"],"get":[{"raw":"{\"id\":\"cli:agent:get\",\"result\":{}}"}]}' \
   "error herdr agent get output has no result.agent" 1 -- w1 5
+calls '^agent get' 4; calls '^sleep 1$' 3
+run '{"status":["A"],"get":[{"raw":"not json"},{"st":"done","seq":6}]}' \
+  "finished seq=6 status=done srv=$A waited=1s" 0 -- w1 5
+calls '^agent get' 2; calls '^sleep 1$' 1
+run '{"status":["A"],"get":[{"raw":"{}"},{"raw":"{}"},{"raw":"{}"},{"st":"done","seq":6}]}' \
+  "finished seq=6 status=done srv=$A waited=3s" 0 -- w1 5
+calls '^agent get' 4; calls '^sleep 1$' 3
 # bad arguments
 usage="error usage: wait-turn.sh <name> <baseline|auto> [stall-seconds] [backstop-seconds] [server-marker]"
 run '{"status":["A"],"get":['"$W"']}' "$usage" 1 -- w1 nope

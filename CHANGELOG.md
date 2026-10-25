@@ -2,6 +2,12 @@
 
 ## 0.4.0
 
+- Follow-ups are sent with `agent prompt` and tracked with `wait-turn.sh`, not `--wait`: the
+  old example led orchs in both hosts to skip the watcher (eval 4, 2026-10-25).
+- Proposal lines are printed as plain text, never in a question dialog.
+- `SKILL.md` quotes Codex's folder-trust prompt and answers it with Enter for the launch folder.
+- `wait-turn.sh` retries an unparseable `herdr agent get` read up to 3 times, 1 s apart, before
+  `error`; a Herdr error code is still reported at once.
 - Command Code (`cmd`) is a third worker kind: started bare with `herdr pane run`, named with
   `herdr agent rename`, and sent every turn with `herdr pane send-text`. The installer's
   auto-mode rule also allows that launch; re-run `bootstrap.sh update --claude-automode yes`.

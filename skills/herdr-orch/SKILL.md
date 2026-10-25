@@ -139,7 +139,8 @@ remaining work instead of a fresh discovery assignment.
 
 ## Propose workers
 
-Before launching, print one line per worker and wait for the owner's go:
+Before launching, print one line per worker as plain text in your reply, never
+a question dialog, and wait for the owner's go:
 
 ```text
 NAME | KIND | MODEL | EFFORT | TAB LABEL | WORKTREE yes/no | reason
@@ -216,8 +217,9 @@ quits. If the folder it names is the worker's recorded launch folder (the tab's
 `--cwd` from the approved proposal), send `herdr agent send-keys <name> down`,
 read the pane again until `❯` marks "Yes, I trust this folder", then send
 `herdr agent send-keys <name> enter` and confirm with `herdr agent get <name>`
-that the worker is working. Codex launched with its approval and sandbox flags
-showed no trust prompt. Any other dialog, or a trust prompt for any other
+that the worker is working. Codex asks "Folder access <folder>" and "Trust this
+folder?" with `› 1. Trust and continue` selected; for the recorded launch folder,
+send `herdr agent send-keys <name> enter`. Any other dialog, or a trust prompt for any other
 folder, goes to the owner.
 
 If the agent name did not stick (a startup timeout), address the worker by its
@@ -255,20 +257,20 @@ as launch argv — the session starts working immediately and skips the TUI-read
 race. Command Code takes every turn by `pane send-text` (see Command Code
 workers).
 
-For a claude or codex follow-up, use `agent prompt` — it submits text plus Enter atomically,
-honoring the pane's live bracketed-paste mode, and `--wait` blocks until the
-worker settles:
+For a claude or codex follow-up, record the worker's `completion_seq`, send with
+`agent prompt` (it submits text plus Enter atomically, honoring the pane's live
+bracketed-paste mode), then track the turn with `wait-turn.sh` from that
+baseline as a background job (see Track workers):
 
 ```bash
 herdr agent prompt perms-fix-loops \
-  "The user asked for this: read <packet path> §Follow-up 2 and follow it." \
-  --wait --timeout 300000
+  "The user asked for this: read <packet path> §Follow-up 2 and follow it."
 ```
 
 A trailing `\n` in `pane send-text` does not submit — a TUI renders it as a soft
-newline and the prompt sits unsubmitted. An unconfirmed send is not delivered:
-if `--wait` returns `agent_prompt_stalled`, the worker never changed state —
-read the screen and resend.
+newline and the prompt sits unsubmitted. If the watcher reports `backstop` and
+the worker never went `working`, the send was not delivered: read the screen and
+resend.
 
 ## Track workers
 
