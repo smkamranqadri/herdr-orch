@@ -126,18 +126,9 @@ No task in progress.
 
 ## Next
 
-1. Orchs wait on `agent prompt --wait` instead of `wait-turn.sh` (eval 4 failed 2/6 on both
-   hosts, 2026-10-25; the eval 2 orchs did the same). `SKILL.md` "Sending prompts" shows the
-   follow-up as `agent prompt ... --wait --timeout 300000`, against "Track workers". Scope it
-   with `/kis:plan` first.
-2. A Codex orch proposed workers in a `request_user_input` dialog, not as printed proposal
-   lines (eval 1, 2026-10-25). Scope it with `/kis:plan` first.
-3. `SKILL.md` says Codex showed no trust prompt; in every eval sandbox (a git repo with
-   `.agents/` and `.claude/` folders) Codex asked "Folder access <folder> Trust this folder? ...
-   › 1. Trust and continue / 2. Quit", answered with Enter (2026-10-25). Correct the line.
-4. Watcher dies on one unparseable `herdr agent get` read (2026-10-25: armed right after
-   `agent rename` on a Command Code pane, it printed `error unparseable output from herdr agent
-   get` and exited 1; the same read parsed a moment later). It should retry a bad read before
-   giving up. Scope it with `/kis:plan` first.
-5. Codex sometimes prints `Killed` right after `agent start` (2026-10-24 `codex-orch2`,
+1. Fixes from the eval run (the `--wait` follow-up example, Codex proposal dialog, Codex
+   trust-prompt line, watcher retry on a bad read): plan approved and reviewed 2026-10-25
+   (codex gpt-6.1-sol low, 3 fixed); ready for `/kis:act`:
+   [eval-fixes.md](../intent/eval-fixes.md).
+2. Codex sometimes prints `Killed` right after `agent start` (2026-10-24 `codex-orch2`,
    2026-10-25 eval 3); one relaunch worked both times. Cause unknown; watch for a third.
